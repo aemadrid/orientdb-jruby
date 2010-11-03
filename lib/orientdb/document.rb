@@ -1,21 +1,34 @@
 class OrientDB::Document
 
-  include OrientDB::Mixins::Proxy
+  include OrientDB::ProxyMixin
 
-  KLASS = com.orientechnologies.orient.core.record.impl.ODocument
+  KLASS = com.orientechnologies.orient.core.metadata.schema.OClass
 
-  def initialize(db, klass_name, fields = {})
-    @proxy_object = KLASS.new db, klass_name
-    fields.each do |name, value|
-      @proxy_object.field name.to_s, value
+  def initialize(*args)
+    if args.first.is_a?(KLASS)
+      @proxy_object = args.first
+    else
+      db, klass_name = args[0], args[1]
+      fields = args[2] || {}
+      if db && klass_name
+        @proxy_object = KLASS.new db, klass_name
+        fields.each do |name, value|
+          @proxy_object.field name.to_s, value
+        end
+      else
+        @proxy_object = KLASS.new
+      end
     end
   end
 
   class << self
 
     def create(db, klass_name, fields = {})
-      new(db, klass_name, fields).save
+      obj = new(db, klass_name, fields)
+      obj.save
+      obj
     end
+
   end
 
 end

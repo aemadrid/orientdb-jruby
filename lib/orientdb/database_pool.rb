@@ -1,6 +1,6 @@
 class OrientDB::DatabasePool
 
-  include OrientDB::Mixins::Proxy
+  include OrientDB::ProxyMixin
 
   KLASS = com.orientechnologies.orient.core.db.document.ODatabaseDocumentPool
 
@@ -11,7 +11,8 @@ class OrientDB::DatabasePool
   class << self
 
     def connect(database_url, username, password)
-      new database_url, username, password
+      obj = new database_url, username, password
+      obj
     end
 
   end

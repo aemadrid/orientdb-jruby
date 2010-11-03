@@ -1,6 +1,6 @@
 class OrientDB::User
 
-  include OrientDB::Mixins::Proxy
+  include OrientDB::ProxyMixin
 
   KLASS = com.orientechnologies.orient.core.metadata.security.OUser
 

@@ -91,14 +91,18 @@ class OrientDB::OClass
     proxy_object.exists_property(property_name) ? proxy_object.getProperty(property_name) : nil
   end
 
-  def database
+  def db
     proxy_object.getDocument.getDatabase
   end
-  alias :db :database
 
   def schema
-    database.getMetadata.getSchema
+    db.getMetadata.getSchema
   end
+
+  def create_document(fields = {})
+    OrientDB::Document.create db, name, fields
+  end
+  alias :ceate :create_document
 
   def inspect
     props = properties.map { |x| "#{x.getName}:#{x.getType.to_s.downcase}" }.join(' ')

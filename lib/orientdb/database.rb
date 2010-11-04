@@ -22,10 +22,15 @@ class OrientDB::Database
 
   def query(sql_query = nil)
     sql_query = prepare_sql_query sql_query
-    proxy_object.query(sql_query).map { |x| Document.new x }
+    proxy_object.query(sql_query).map { |x| OrientDB::Document.new x }
   end
 
   alias :find :query
+
+  def first(sql_query = nil)
+    sql_query = prepare_sql_query sql_query
+    proxy_object.query(sql_query).setLimit(1).map { |x| Document.new x }.first
+  end
 
   def prepare_sql_query(sql_query)
     return if sql_query.nil?
@@ -44,7 +49,9 @@ class OrientDB::Database
   def sql_query_from_hash(options = {})
     klass_name = options.delete :class
     raise "Missing class name" unless klass_name
-    columns    = options.delete :columns
+    columns    = options.delete(:columns) || '*'
+    order      = options.delete :order
+    order_sql  = order ? " ORDER BY #{order}" : ''
     fields     = options.map do |field, value|
       cmp = '='
       if value.is_a?(String)
@@ -53,7 +60,7 @@ class OrientDB::Database
       end
       "#{field} #{cmp} #{value}"
     end
-    "SELECT #{columns} FROM #{klass_name} WHERE #{fields.join(' AND ')}"
+    "SELECT #{columns} FROM #{klass_name} WHERE #{fields.join(' AND ')}#{order_sql}"
   end
 
   def schema
@@ -69,15 +76,23 @@ class OrientDB::Database
   end
 
   def each_in_class(klass_name)
-    proxy_object.broseClass(klass_name.to_s).each do |record|
-      yield record
+    proxy_object.browseClass(klass_name.to_s).each do |record|
+      yield OrientDB::Document.new(record)
     end
+  end
+
+  def all_in_class(klass_name)
+    proxy_object.browseClass(klass_name.to_s).map { |x| OrientDB::Document.new x }
   end
 
   def each_in_custer(cluster_name)
     proxy_object.browseCluster(cluster_name.to_s).each do |record|
-      yield record
+      yield OrientDB::Document.new(record)
     end
+  end
+
+  def all_in_custer(cluster_name)
+    proxy_object.browseCluster(cluster_name.to_s).map { |x| OrientDB::Document.new x }
   end
 
   def get_class(klass_name)

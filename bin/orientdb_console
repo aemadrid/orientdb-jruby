@@ -1,6 +1,22 @@
 #!/usr/bin/env jruby
 require File.expand_path(File.dirname(__FILE__) + "/../lib/orientdb")
 
+if ARGV.include?('test:db')
+  GEM_ROOT  = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+  TEMP_DIR  = Dir.pwd + '/tmp'
+
+  TEST_DB_PATH = "#{TEMP_DIR}/databases/db_#{rand(999) + 1}"
+
+  puts ">> GEM_ROOT     : #{GEM_ROOT}"
+  puts ">> TEST_DB PATH : #{TEST_DB_PATH}"
+
+  require 'fileutils'
+  FileUtils.mkdir_p TEST_DB_PATH
+  @db = OrientDB::Database.new("local:#{TEST_DB_PATH}/test").create
+end
+
+include OrientDB
+
 require 'irb'
 ARGV.clear
 IRB.start(__FILE__)

@@ -1,18 +1,11 @@
-class OrientDB::DatabasePool
+module OrientDB
 
-  include OrientDB::ProxyMixin
+  DatabasePool = com.orientechnologies.orient.core.db.document.ODatabaseDocumentPool
 
-  KLASS = com.orientechnologies.orient.core.db.document.ODatabaseDocumentPool
+  class DatabasePool
 
-  def initialize(database_url, username, password)
-    @proxy_object = KLASS.global.acquire database_url, username, password
-  end
-
-  class << self
-
-    def connect(database_url, username, password)
-      obj = new database_url, username, password
-      obj
+    def initialize(database_url, username, password)
+      self.class.global.acquire database_url, username, password
     end
 
   end

@@ -1,14 +1,23 @@
 PATH
   remote: .
   specs:
-    orientdb (0.0.1-java)
+    orientdb (0.0.2-java)
       hashie
 
 GEM
   remote: http://rubygems.org/
   specs:
     awesome_print (0.2.1)
+    diff-lcs (1.1.2)
     hashie (0.4.0)
+    rspec (2.1.0)
+      rspec-core (~> 2.1.0)
+      rspec-expectations (~> 2.1.0)
+      rspec-mocks (~> 2.1.0)
+    rspec-core (2.1.0)
+    rspec-expectations (2.1.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.1.0)
 
 PLATFORMS
   java
@@ -18,3 +27,4 @@ DEPENDENCIES
   bundler (>= 1.0.0)
   hashie
   orientdb!
+  rspec (>= 2.1)

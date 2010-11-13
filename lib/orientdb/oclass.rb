@@ -1,12 +1,12 @@
-class OrientDB::OClass
+module OrientDB
 
-  include OrientDB::ProxyMixin
 
-  KLASS         = com.orientechnologies.orient.core.metadata.schema.OClass
+  OClass        = com.orientechnologies.orient.core.metadata.schema.OClass
 
-  SchemaType    = com.orientechnologies.orient.core.metadata.schema.OType
+#  SchemaType    = com.orientechnologies.orient.core.metadata.schema.OType
   ClusterType   = com.orientechnologies.orient.core.storage.OStorage::CLUSTER_TYPE
   IndexType     = com.orientechnologies.orient.core.metadata.schema.OProperty::INDEX_TYPE
+
 
   FIELD_TYPES   = {
     :binary        => "BINARY",
@@ -36,110 +36,100 @@ class OrientDB::OClass
     h
   end
 
-  STORAGE_TYPES = %w{ LOGICAL MEMORY PHYSICAL }.inject({}) do |h, s|
-    h[s.downcase.to_sym] = ClusterType.const_get s
-    h
-  end
+  STORAGE_TYPES = %w{ LOGICAL MEMORY PHYSICAL }.inject({}) { |h, s| h[s.downcase.to_sym] = ClusterType.const_get s; h }
+  INDEX_TYPES   = %w{ FULLTEXT NOT_UNIQUE UNIQUE }.inject({}) { |h, s| h[s.downcase.to_sym] = IndexType.const_get s; h }
 
-  INDEX_TYPES   = %w{ FULLTEXT NOT_UNIQUE UNIQUE }.inject({}) do |h, s|
-    h[s.downcase.to_sym] = IndexType.const_get s
-    h
-  end
+  class OClass
 
-  def initialize(*args)
-    if args.first.is_a?(KLASS)
-      @proxy_object = args.first
-    else
-      @proxy_object = KLASS.new
-    end
-  end
-
-  def add(property_name, type)
-    property_name = property_name.to_s
-    if proxy_object.existsProperty(property_name)
-      puts "We already have that property name [#{property_name}]"
-      return false
-    end
-
-    case type
-      when Symbol
-        proxy_object.createProperty property_name, FIELD_TYPES[type]
-      when OrientDB::OClass
-        proxy_object.createProperty property_name, FIELD_TYPES[:link], type.proxy_object
-      when Array
-        type[0] = FIELD_TYPES[type[0]] if type[0].is_a?(Symbol)
-        proxy_object.createProperty property_name, *type
-      when Hash
-        type[:type] = FIELD_TYPES[:link] if type[:type].is_a?(Symbol)
-        prop    = proxy_object.createProperty property_name, type[:type]
-        prop.setMin(type[:min]) unless type[:min].nil?
-        prop.setMax(type[:max]) unless type[:max].nil?
-        prop.setMandatory(!!type[:mandatory]) unless type[:mandatory].nil?
-        prop.setNotNull(type[:not_null]) unless type[:not_null].nil?
-        unless type[:index].nil?
-          index_type = type[:index] == true ? INDEX_TYPES[:not_unique] : INDEX_TYPES[type[:index]]
-          prop.createIndex index_type
-        end
-      else
-        puts "ERROR! Unknown type [ #{property_name} | #{type} : #{type.class.name} ]"
-    end
-    self
-  end
-
-  def [](property_name)
-    property_name = property_name.to_s
-    proxy_object.exists_property(property_name) ? proxy_object.getProperty(property_name) : nil
-  end
-
-  def db
-    proxy_object.getDocument.getDatabase
-  end
-
-  def schema
-    db.getMetadata.getSchema
-  end
-
-  def create_document(fields = {})
-    OrientDB::Document.create db, name, fields
-  end
-  alias :ceate :create_document
-
-  def inspect
-    props = properties.map { |x| "#{x.getName}:#{x.getType.to_s.downcase}" }.join(' ')
-    %{#<OrientDB::OClass:#{name}#{props.empty? ? '' : ' ' + props}>}
-  end
-
-  alias :to_s :inspect
-
-  class << self
-
-    def create(db, name, fields = {})
-      add_cluster = fields.delete :add_cluster
-      add_cluster = true if add_cluster.nil?
-
-      if add_cluster
-        cluster = db.storage.addCluster name.downcase, STORAGE_TYPES[:physical]
-        klass   = db.schema.createClass name, cluster
-      else
-        klass = db.schema.createClass name
+    def add(property_name, type)
+      property_name = property_name.to_s
+      if exists_property(property_name)
+        puts "We already have that property name [#{property_name}]"
+        return false
       end
 
-      super_klass = fields.delete :super
-      klass.setSuperClass(super_klass) if super_klass
-      db.schema.save
+      case type
+        when Symbol
+          create_property property_name, FIELD_TYPES[type]
+        when OrientDB::OClass
+          create_property property_name, FIELD_TYPES[:link], type
+        when Array
+          type[0] = FIELD_TYPES[type[0]] if type[0].is_a?(Symbol)
+          create_property property_name, *type
+        when Hash
+          raise "Missing property type for [#{property_name}]" unless type[:type]
+          if type[:type].is_a?(OrientDB::OClass)
+            prop = create_property property_name, FIELD_TYPES[:link], type[:type]
+          else
+            prop = create_property property_name, FIELD_TYPES[type[:type]]
+          end
+          prop.set_min type[:min].to_s unless type[:min].nil?
+          prop.set_max type[:max].to_s unless type[:max].nil?
+          prop.set_mandatory !!type[:mandatory] unless type[:mandatory].nil?
+          prop.set_not_null type[:not_null] unless type[:not_null].nil?
+          unless type[:index].nil?
+            index_type = type[:index] == true ? INDEX_TYPES[:not_unique] : INDEX_TYPES[type[:index]]
+            prop.createIndex index_type
+          end
+        else
+          puts "ERROR! Unknown type [ #{property_name} | #{type} : #{type.class.name} ]"
+      end
+      self
+    end
 
-      obj         = new klass
+    def [](property_name)
+      property_name = property_name.to_s
+      exists_property(property_name) ? get_property(property_name) : nil
+    end
 
-      unless fields.empty?
-        fields.each do |property_name, type|
-          obj.add property_name, type
+    def db
+      document.database
+    end
+
+    def schema
+      db.metadata.schema
+    end
+
+    def inspect
+      props = properties.map { |x| "#{x.name}:#{x.type.to_s.downcase}" }.join(' ')
+      %{#<OrientDB::OClass:#{name}#{props.empty? ? '' : ' ' + props}>}
+    end
+
+    alias :to_s :inspect
+
+
+    class << self
+
+      def create(db, name, fields = {})
+        name        = name.to_s
+        add_cluster = fields.delete :add_cluster
+        add_cluster = true if add_cluster.nil?
+
+        if add_cluster
+          cluster = db.storage.add_cluster name.downcase, STORAGE_TYPES[:physical]
+          klass   = db.schema.create_class name, cluster
+        else
+          klass = db.schema.create_class name
         end
+
+        super_klass = fields.delete :super
+        super_klass = db.get_class(super_klass.to_s) unless super_klass.is_a?(OrientDB::OClass)
+        klass.set_super_class super_klass if super_klass
         db.schema.save
+
+        unless fields.empty?
+          fields.each do |property_name, type|
+            klass.add property_name, type
+          end
+          db.schema.save
+        end
+
+        klass
       end
 
-      obj
     end
 
   end
+
 
 end

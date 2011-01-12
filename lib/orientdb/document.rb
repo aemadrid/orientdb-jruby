@@ -1,7 +1,5 @@
 module OrientDB
 
-  Document = com.orientechnologies.orient.core.record.impl.ODocument
-
   class Document
 
     def values
@@ -20,6 +18,8 @@ module OrientDB
 
     def method_missing(method_name, *args, &blk)
       return self[method_name] if contains_field(method_name.to_s)
+      return nil if schema_class.exists_property?(method_name.to_s)
+
       match = method_name.to_s.match(/(.*?)([?=!]?)$/)
       case match[2]
         when "="
@@ -31,9 +31,13 @@ module OrientDB
       end
     end
 
+    def rid
+      identity.to_s
+    end
+
     def inspect
-      props = values.map { |k, v| "#{k}:#{v}" }.join(' ')
-      %{#<OrientDB::Document:#{get_class_name}#{props.empty? ? '' : ' ' + props}>}
+      props = values.map { |k, v| "#{k}:#{v.inspect}" }.join(' ')
+      %{#<OrientDB::Document:#{class_name}:#{rid}#{props.empty? ? '' : ' ' + props}>}
     end
 
     alias :to_s :inspect
@@ -43,9 +47,10 @@ module OrientDB
       alias_method :native_new, :new
 
       def new(db, klass_name, fields = {})
-        obj = native_new db, klass_name
+        puts "new : #{db} : #{klass_name} : #{fields.inspect}"
+        obj = native_new db, klass_name.to_s
         fields.each do |name, value|
-          obj.field name, value
+          obj.field name.to_s, value
         end
         obj
       end

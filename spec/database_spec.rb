@@ -1,0 +1,91 @@
+require File.expand_path("../spec_helper", __FILE__)
+
+describe "OrientDB" do
+
+  describe "Database" do
+
+    before :all do
+      create_classes
+    end
+
+    it "should create a valid simple table" do
+      exp_class = "#<OrientDB::OClass:person name=string>"
+      exp_props = ["#<OrientDB::Propery:name type=string indexed=false mandatory=false not_null=false>"]
+      @person_class.to_s.should == exp_class
+      @person_class.properties.map { |x| x.to_s }.should == exp_props
+    end
+
+    it "should create a valid simple descendant table" do
+      exp_class = "#<OrientDB::OClass:customer super=person tab=float name=string>"
+      exp_props = [
+        "#<OrientDB::Propery:tab type=decimal indexed=false mandatory=false not_null=false>",
+        "#<OrientDB::Propery:name type=string indexed=false mandatory=false not_null=false>"
+      ]
+      @customer_class.to_s.should == exp_class
+      @customer_class.properties.map { |x| x.to_s }.should == exp_props
+    end
+
+    it "should create a complex table" do
+      exp_class = "#<OrientDB::OClass:invoice number=integer(idx) customer=link sold_on=date total=float lines=linklist>"
+      exp_props = [
+        "#<OrientDB::Propery:number type=int indexed=true mandatory=true not_null=false>",
+        "#<OrientDB::Propery:customer type=link indexed=false mandatory=false not_null=true>",
+        "#<OrientDB::Propery:sold_on type=date indexed=false mandatory=false not_null=false>",
+        "#<OrientDB::Propery:total type=decimal indexed=false mandatory=false not_null=false>",
+        "#<OrientDB::Propery:lines type=link_list indexed=false mandatory=false not_null=false>"
+      ]
+      @invoice_class.to_s.should == exp_class
+      @invoice_class.properties.map { |x| x.to_s }.should == exp_props
+    end
+
+    describe "Query" do
+
+      before :all do
+        create_classes
+
+        @oclass = @employee_class.name
+        @e1 = OrientDB::Document.create DB, @oclass, :name => "Mark", :age => 36, :groups => %w{admin sales}
+        @e2 = OrientDB::Document.create DB, @oclass, :name => "John", :age => 37, :groups => %w{admin tech}
+        @e3 = OrientDB::Document.create DB, @oclass, :name => "Luke", :age => 38, :groups => %w{tech support}
+        @e4 = OrientDB::Document.create DB, @oclass, :name => "Matt", :age => 39, :groups => %w{admin office}
+        @e5 = OrientDB::Document.create DB, @oclass, :name => "Pete", :age => 40, :groups => %w{vp office}
+        @employees = [@e1,@e2,@e3,@e4,@e5]
+      end
+
+      it "should prepare valid queries" do
+        qry1 = DB.prepare_sql_query :oclass => "person"
+        qry1.should be_a_kind_of OrientDB::SQLQuery
+        qry1.text.should == "SELECT * FROM person"
+
+        qry2 = DB.prepare_sql_query :oclass => "person", :name => "John"
+        qry2.should be_a_kind_of OrientDB::SQLQuery
+        qry2.text.should == "SELECT * FROM person WHERE name = 'John'"
+
+        qry3 = DB.prepare_sql_query qry2.text
+        qry3.should be_a_kind_of OrientDB::SQLQuery
+        qry3.text.should == qry2.text
+
+        qry4 = DB.prepare_sql_query qry3
+        qry4.should be_a_kind_of OrientDB::SQLQuery
+        qry4.text.should == qry2.text
+      end
+
+      it "should get all rows for a class" do
+        DB.all(:oclass => @oclass).map.should == @employees
+      end
+
+      it "should find rows by simple field values" do
+        DB.first(:oclass => @oclass, :name => "Mark").should == @e1
+        DB.first(:oclass => @oclass, :age => 37).should == @e2
+      end
+
+      it "should find rows by values in arrays" do
+        qry = DB.prepare_sql_query "SELECT * FROM #{@oclass} WHERE 'admin' IN groups"
+        DB.query(qry).map.should == [@e1,@e2,@e4]
+      end
+
+    end
+
+  end
+
+end

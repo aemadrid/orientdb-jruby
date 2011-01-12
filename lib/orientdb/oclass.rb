@@ -1,44 +1,5 @@
 module OrientDB
 
-
-  OClass        = com.orientechnologies.orient.core.metadata.schema.OClass
-
-#  SchemaType    = com.orientechnologies.orient.core.metadata.schema.OType
-  ClusterType   = com.orientechnologies.orient.core.storage.OStorage::CLUSTER_TYPE
-  IndexType     = com.orientechnologies.orient.core.metadata.schema.OProperty::INDEX_TYPE
-
-
-  FIELD_TYPES   = {
-    :binary        => "BINARY",
-    :bool          => "BOOLEAN",
-    :boolean       => "BOOLEAN",
-    :double        => "BYTE",
-    :date          => "DATE",
-    :datetime      => "DATE",
-    :decimal       => "FLOAT",
-    :double        => "DOUBLE",
-    :embedded      => "EMBEDDED",
-    :embedded_list => "EMBEDDEDLIST",
-    :embedded_map  => "EMBEDDEDMAP",
-    :embedded_set  => "EMBEDDEDSET",
-    :float         => "FLOAT",
-    :int           => "INTEGER",
-    :integer       => "INTEGER",
-    :link          => "LINK",
-    :link_list     => "LINKLIST",
-    :link_map      => "LINKMAP",
-    :link_set      => "LINKSET",
-    :long          => "LONG",
-    :short         => "SHORT",
-    :string        => "STRING",
-  }.inject({}) do |h, (k, v)|
-    h[k] = SchemaType.const_get v
-    h
-  end
-
-  STORAGE_TYPES = %w{ LOGICAL MEMORY PHYSICAL }.inject({}) { |h, s| h[s.downcase.to_sym] = ClusterType.const_get s; h }
-  INDEX_TYPES   = %w{ FULLTEXT NOT_UNIQUE UNIQUE }.inject({}) { |h, s| h[s.downcase.to_sym] = IndexType.const_get s; h }
-
   class OClass
 
     def add(property_name, type)
@@ -55,6 +16,7 @@ module OrientDB
           create_property property_name, FIELD_TYPES[:link], type
         when Array
           type[0] = FIELD_TYPES[type[0]] if type[0].is_a?(Symbol)
+          type[1] = FIELD_TYPES[type[1]] if type[1].is_a?(Symbol)
           create_property property_name, *type
         when Hash
           raise "Missing property type for [#{property_name}]" unless type[:type]
@@ -68,7 +30,7 @@ module OrientDB
           prop.set_mandatory !!type[:mandatory] unless type[:mandatory].nil?
           prop.set_not_null type[:not_null] unless type[:not_null].nil?
           unless type[:index].nil?
-            index_type = type[:index] == true ? INDEX_TYPES[:not_unique] : INDEX_TYPES[type[:index]]
+            index_type = type[:index] == true ? INDEX_TYPES[:notunique] : INDEX_TYPES[type[:index]]
             prop.createIndex index_type
           end
         else
@@ -91,12 +53,14 @@ module OrientDB
     end
 
     def inspect
-      props = properties.map { |x| "#{x.name}:#{x.type.to_s.downcase}" }.join(' ')
-      %{#<OrientDB::OClass:#{name}#{props.empty? ? '' : ' ' + props}>}
+      props = properties.map { |x| "#{x.name}=#{x.type.to_s.downcase}#{x.is_indexed? ? '(idx)' : ''}" }.join(' ')
+      "#<OrientDB::OClass:" + name +
+        (getSuperClass ? ' super=' + getSuperClass.name : '') +
+        (props.empty? ? '' : ' ' + props) +
+        ">"
     end
 
     alias :to_s :inspect
-
 
     class << self
 
@@ -105,11 +69,16 @@ module OrientDB
         add_cluster = fields.delete :add_cluster
         add_cluster = true if add_cluster.nil?
 
-        if add_cluster
-          cluster = db.storage.add_cluster name.downcase, STORAGE_TYPES[:physical]
-          klass   = db.schema.create_class name, cluster
+        if db.schema.exists_class? name
+          klass = db.get_class name
         else
-          klass = db.schema.create_class name
+          if add_cluster && !db.storage.cluster_names.include?(name.downcase)
+            cluster = db.storage.add_cluster name.downcase, STORAGE_TYPES[:physical]
+            klass   = db.schema.create_class name, cluster
+          else
+            klass   = db.schema.create_class name
+            cluster = db.storage.get_cluster_by_name name.downcase
+          end
         end
 
         super_klass = fields.delete :super

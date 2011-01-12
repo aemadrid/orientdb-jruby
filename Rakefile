@@ -1,10 +1,56 @@
-require 'bundler'
-Bundler::GemHelper.install_tasks
+require 'rubygems'
+require 'rake'
 
-require 'spec/rake/spectask'
+version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
-Spec::Rake::SpecTask.new(:spec) do |t|
-  t.spec_files = Dir.glob('spec/**/*_spec.rb')
-  t.spec_opts << '--format specdoc'
-#  t.rcov = true
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gem|
+    gem.name                      = "orientdb"
+    gem.platform                  = "jruby"
+    gem.authors                   = ["Adrian Madrid"]
+    gem.email                     = ["aemadrid@gmail.com"]
+    gem.homepage                  = "http://rubygems.org/gems/orientdb"
+    gem.summary                   = "JRuby wrapper for OrientDB"
+    gem.description               = "Simple JRuby wrapper for the OrientDB."
+
+    gem.required_rubygems_version = ">= 1.3.6"
+    gem.rubyforge_project         = "orientdb"
+
+    gem.add_development_dependency "awesome_print"
+    gem.add_development_dependency "rspec", ">= 2.4"
+
+    gem.files        = `git ls-files`.split("\n")
+    gem.test_files   = Dir["test/test*.rb"]
+    gem.executables  = `git ls-files`.split("\n").map { |f| f =~ /^bin\/(.*)/ ? $1 : nil }.compact
+    gem.require_path = 'lib'
+  end
+  Jeweler::GemcutterTasks.new
+rescue LoadError
+  puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
+end
+
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec)
+
+desc "Run all examples using rcov"
+RSpec::Core::RakeTask.new :rcov => :cleanup_rcov_files do |t|
+  t.rcov      = true
+  t.rcov_opts = %[-Ilib -Ispec --exclude "spec/*,gems/*" --text-report --sort coverage --aggregate coverage.data]
+end
+
+task :cleanup_rcov_files do
+  rm_rf 'coverage.data'
+end
+
+task :spec => :check_dependencies
+
+task :default => :spec
+
+require 'rake/rdoctask'
+Rake::RDocTask.new do |rdoc|
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title    = "orientdb #{version}"
+  rdoc.rdoc_files.include('README*')
+  rdoc.rdoc_files.include('lib/**/*.rb')
 end

@@ -12,7 +12,7 @@ if ARGV.include?('test:db')
 
   require 'fileutils'
   FileUtils.mkdir_p TEST_DB_PATH
-  @db = OrientDB::Database.new("local:#{TEST_DB_PATH}/test").create
+  DB = OrientDB::Database.new("local:#{TEST_DB_PATH}/test").create
 end
 
 include OrientDB

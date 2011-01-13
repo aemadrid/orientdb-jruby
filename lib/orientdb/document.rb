@@ -16,6 +16,18 @@ module OrientDB
       field field_name.to_s, value
     end
 
+    def field?(name)
+      contains_field(name.to_s) || schema_class.exists_property?(name.to_s)
+    end
+
+    def respond_to?(method_name)
+      return true if field?(method_name.to_s)
+      match = method_name.to_s.match(/(.*?)([?=!]?)$/)
+      return true if match[2] == '='
+      return true if match[2] == '?' && field?(match[1])
+      super
+    end
+
     def method_missing(method_name, *args, &blk)
       return self[method_name] if contains_field(method_name.to_s)
       return nil if schema_class.exists_property?(method_name.to_s)
@@ -25,7 +37,7 @@ module OrientDB
         when "="
           self[match[1]] =  args.first
         when "?"
-          !!self[match[1]]
+          field(match[1]) ? !!self[match[1]] : super
         else
           super
       end

@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{orientdb}
-  s.version = "0.0.6"
+  s.version = "0.0.7"
   s.platform = %q{jruby}
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.3.6") if s.respond_to? :required_rubygems_version=
   s.authors = ["Adrian Madrid"]
-  s.date = %q{2011-01-12}
+  s.date = %q{2011-01-13}
   s.default_executable = %q{orientdb_console}
   s.description = %q{Simple JRuby wrapper for the OrientDB.}
   s.email = ["aemadrid@gmail.com"]

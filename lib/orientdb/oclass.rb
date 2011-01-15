@@ -10,17 +10,12 @@ module OrientDB
           FIELD_TYPES[value]
         else
           FIELD_TYPES[value.to_s.to_sym]
-      end
+             end
       raise "Uknown schema type for [#{value}]" unless type
       type
     end
 
     def add(property_name, type, options = {})
-      if type.is_a?(Hash)
-        real_type = type.delete(:type)
-        return add(property_name, real_type, type)
-      end
-
       property_name = property_name.to_s
       if exists_property(property_name)
         puts "We already have that property name [#{property_name}]"
@@ -28,14 +23,15 @@ module OrientDB
       end
 
       case type
+        when SchemaType
+          prop = create_property property_name, type
         when Symbol
           prop = create_property property_name, type_for(type)
-        when OrientDB::OClass
+        when OClass
           prop = create_property property_name, type_for(:link), type
         when Array
-          type[0] = type_for(type[0]) if type[0].is_a?(Symbol)
-          type[1] = type_for(type[1]) if type[1].is_a?(Symbol)
-          prop = create_property property_name, *type
+          type, sub_type = type_for(type.first), type_for(type.last)
+          prop = create_property property_name, type, sub_type
         else
           raise "ERROR! Unknown type [ #{property_name} | #{type} : #{type.class.name} ]"
       end
@@ -78,19 +74,28 @@ module OrientDB
     class << self
 
       def create(db, name, fields = {})
+        puts "create [#{name}], #{fields.inspect}"
         name        = name.to_s
         add_cluster = fields.delete :add_cluster
         add_cluster = true if add_cluster.nil?
+        use_cluster = fields.delete :use_cluster
+        puts "use_cluster : #{use_cluster}"
 
         if db.schema.exists_class? name
           klass = db.get_class name
         else
-          if add_cluster && !db.storage.cluster_names.include?(name.downcase)
+          if use_cluster
+            cluster = db.storage.get_cluster use_cluster
+            klass   = db.schema.create_class name, use_cluster
+            puts "created and used cluster [#{cluster}] for [#{klass}]"
+          elsif add_cluster && !db.storage.cluster_names.include?(name.downcase)
             cluster = db.storage.add_cluster name.downcase, STORAGE_TYPES[:physical]
             klass   = db.schema.create_class name, cluster
+            puts "created and added cluster [#{cluster}] for [#{klass}]"
           else
             klass   = db.schema.create_class name
-            cluster = db.storage.get_cluster_by_name name.downcase
+            cluster = db.storage.get_cluster klass.cluster_ids.first
+            puts "created and got cluster [#{cluster}] for [#{klass}]"
           end
         end
 
@@ -101,7 +106,16 @@ module OrientDB
 
         unless fields.empty?
           fields.each do |property_name, type|
-            klass.add property_name, type
+            case type
+              when Symbol, Array, OrientDB::OClass
+                klass.add property_name, type
+              when Hash
+                options = type.dup
+                type = options.delete :type
+                klass.add property_name, type, options
+              else
+                raise "Unknown field options [#{type.inspect}]"
+            end
           end
           db.schema.save
         end

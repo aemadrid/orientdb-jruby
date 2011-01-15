@@ -29,8 +29,7 @@ module OrientDB
     end
 
     def method_missing(method_name, *args, &blk)
-      return self[method_name] if contains_field(method_name.to_s)
-      return nil if schema_class.exists_property?(method_name.to_s)
+      return self[method_name] if field?(method_name)
 
       match = method_name.to_s.match(/(.*?)([?=!]?)$/)
       case match[2]

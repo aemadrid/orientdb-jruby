@@ -105,8 +105,8 @@ class OrientDB::Database
     OrientDB::OClass.create self, klass_name.to_s, fields
   end
 
-  def get_or_create_class(klass_name)
-    get_class(klass_name) || create_class(klass_name)
+  def get_or_create_class(klass_name, fields = {})
+    get_class(klass_name) || create_class(klass_name, fields)
   end
 
   alias :each_in_class :browseClass

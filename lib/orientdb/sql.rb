@@ -4,9 +4,16 @@ module OrientDB
     # Extend strings and symbols to create queries easier
     def monkey_patch!
       require 'orientdb/sql_ext'
+      @monkey_patched = true
     end
 
     module_function :monkey_patch!
+
+    def monkey_patched?
+      @monkey_patched
+    end
+
+    module_function :monkey_patched?
 
     class Expression
 

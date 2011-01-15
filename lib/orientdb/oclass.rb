@@ -4,13 +4,13 @@ module OrientDB
 
     def type_for(value)
       type = case value
-        when SchemaType
+        when OrientDB::SchemaType, OrientDB::OClass
           value
         when Symbol
           FIELD_TYPES[value]
         else
           FIELD_TYPES[value.to_s.to_sym]
-             end
+        end
       raise "Uknown schema type for [#{value}]" unless type
       type
     end

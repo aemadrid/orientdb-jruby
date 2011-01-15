@@ -42,12 +42,12 @@ class OrientDB::Database
   def prepare_sql_query(sql_query)
     return if sql_query.nil?
     case sql_query
-      when com.orientechnologies.orient.core.sql.query.OSQLSynchQuery
+      when OrientDB::SQLSynchQuery
         sql_query
       when String
-        com.orientechnologies.orient.core.sql.query.OSQLSynchQuery.new sql_query
+        OrientDB::SQLSynchQuery.new sql_query
       when Hash
-        com.orientechnologies.orient.core.sql.query.OSQLSynchQuery.new sql_query_from_hash(sql_query)
+        OrientDB::SQLSynchQuery.new sql_query_from_hash(sql_query)
       else
         raise "Unknown query type"
     end

@@ -54,19 +54,19 @@ describe "OrientDB" do
 
       it "should prepare valid queries" do
         qry1 = DB.prepare_sql_query :oclass => "person"
-        qry1.should be_a_kind_of OrientDB::SQLQuery
+        qry1.should be_a_kind_of OrientDB::SQLSynchQuery
         qry1.text.should == "SELECT * FROM person"
 
         qry2 = DB.prepare_sql_query :oclass => "person", :name => "John"
-        qry2.should be_a_kind_of OrientDB::SQLQuery
+        qry2.should be_a_kind_of OrientDB::SQLSynchQuery
         qry2.text.should == "SELECT * FROM person WHERE name = 'John'"
 
         qry3 = DB.prepare_sql_query qry2.text
-        qry3.should be_a_kind_of OrientDB::SQLQuery
+        qry3.should be_a_kind_of OrientDB::SQLSynchQuery
         qry3.text.should == qry2.text
 
         qry4 = DB.prepare_sql_query qry3
-        qry4.should be_a_kind_of OrientDB::SQLQuery
+        qry4.should be_a_kind_of OrientDB::SQLSynchQuery
         qry4.text.should == qry2.text
       end
 

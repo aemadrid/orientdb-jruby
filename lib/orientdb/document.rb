@@ -58,7 +58,6 @@ module OrientDB
       alias_method :native_new, :new
 
       def new(db, klass_name, fields = {})
-        puts "new : #{db} : #{klass_name} : #{fields.inspect}"
         obj = native_new db, klass_name.to_s
         fields.each do |name, value|
           obj.field name.to_s, value

@@ -74,12 +74,10 @@ module OrientDB
     class << self
 
       def create(db, name, fields = {})
-        puts "create [#{name}], #{fields.inspect}"
         name        = name.to_s
         add_cluster = fields.delete :add_cluster
         add_cluster = true if add_cluster.nil?
         use_cluster = fields.delete :use_cluster
-        puts "use_cluster : #{use_cluster}"
 
         if db.schema.exists_class? name
           klass = db.get_class name
@@ -87,15 +85,12 @@ module OrientDB
           if use_cluster
             cluster = db.storage.get_cluster use_cluster
             klass   = db.schema.create_class name, use_cluster
-            puts "created and used cluster [#{cluster}] for [#{klass}]"
           elsif add_cluster && !db.storage.cluster_names.include?(name.downcase)
             cluster = db.storage.add_cluster name.downcase, STORAGE_TYPES[:physical]
             klass   = db.schema.create_class name, cluster
-            puts "created and added cluster [#{cluster}] for [#{klass}]"
           else
             klass   = db.schema.create_class name
             cluster = db.storage.get_cluster klass.cluster_ids.first
-            puts "created and got cluster [#{cluster}] for [#{klass}]"
           end
         end
 

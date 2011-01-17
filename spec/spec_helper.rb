@@ -4,9 +4,8 @@ unless defined?(SPEC_HELPER_LOADED)
 
   require 'spec_basic_helper'
 
-  FileUtils.mkdir_p TEST_DB_PATH
-
   TEST_DB_PATH = "#{TEMP_DIR}/databases/db_#{rand(999) + 1}"
+  FileUtils.mkdir_p TEST_DB_PATH
   puts ">> TEST_DB PATH : #{TEST_DB_PATH}"
 
   DB = OrientDB::Database.new("local:#{TEST_DB_PATH}/test").create

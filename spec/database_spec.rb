@@ -43,23 +43,24 @@ describe "OrientDB" do
       before :all do
         create_classes
 
-        @oclass = @employee_class.name
-        @e1 = OrientDB::Document.create DB, @oclass, :name => "Mark", :age => 36, :groups => %w{admin sales}
-        @e2 = OrientDB::Document.create DB, @oclass, :name => "John", :age => 37, :groups => %w{admin tech}
-        @e3 = OrientDB::Document.create DB, @oclass, :name => "Luke", :age => 38, :groups => %w{tech support}
-        @e4 = OrientDB::Document.create DB, @oclass, :name => "Matt", :age => 39, :groups => %w{admin office}
-        @e5 = OrientDB::Document.create DB, @oclass, :name => "Pete", :age => 40, :groups => %w{vp office}
-        @employees = [@e1,@e2,@e3,@e4,@e5]
+        @oclass    = @employee_class.name
+        @e1        = OrientDB::Document.create DB, @oclass, :name => "Mark", :age => 36, :groups => %w{admin sales}
+        @e2        = OrientDB::Document.create DB, @oclass, :name => "John", :age => 37, :groups => %w{admin tech}
+        @e3        = OrientDB::Document.create DB, @oclass, :name => "Luke", :age => 38, :groups => %w{tech support}
+        @e4        = OrientDB::Document.create DB, @oclass, :name => "Matt", :age => 39, :groups => %w{admin office}
+        @e5        = OrientDB::Document.create DB, @oclass, :name => "Pete", :age => 40, :groups => %w{vp office}
+        @employees = [@e1, @e2, @e3, @e4, @e5]
       end
 
       it "should prepare valid queries" do
-        qry1 = DB.prepare_sql_query :oclass => "person"
+        exp  = "SELECT * FROM #{@oclass}"
+        qry1 = DB.prepare_sql_query exp
         qry1.should be_a_kind_of OrientDB::SQLSynchQuery
-        qry1.text.should == "SELECT * FROM person"
+        qry1.text.should == exp
 
-        qry2 = DB.prepare_sql_query :oclass => "person", :name => "John"
+        qry2 = DB.prepare_sql_query OrientDB::SQL::Query.new.from(@oclass).where(:name => "John")
         qry2.should be_a_kind_of OrientDB::SQLSynchQuery
-        qry2.text.should == "SELECT * FROM person WHERE name = 'John'"
+        qry2.text.should == "SELECT FROM #{@oclass} WHERE name = 'John'"
 
         qry3 = DB.prepare_sql_query qry2.text
         qry3.should be_a_kind_of OrientDB::SQLSynchQuery
@@ -71,17 +72,22 @@ describe "OrientDB" do
       end
 
       it "should get all rows for a class" do
-        DB.all(:oclass => @oclass).map.should == @employees
+        DB.query('SELECT FROM employee').map.should == @employees
+      end
+
+      it "should create a valid query and return the right results" do
+        qry = OrientDB::SQL::Query.new.from(@oclass).where("'admin' IN groups", 'age > 37')
+        DB.first(qry).should == @e4
       end
 
       it "should find rows by simple field values" do
-        DB.first(:oclass => @oclass, :name => "Mark").should == @e1
-        DB.first(:oclass => @oclass, :age => 37).should == @e2
+        DB.first("SELECT * FROM employee WHERE name = 'Mark'").should == @e1
+        DB.first('SELECT * FROM employee WHERE age = 37').should == @e2
       end
 
       it "should find rows by values in arrays" do
         qry = DB.prepare_sql_query "SELECT * FROM #{@oclass} WHERE 'admin' IN groups"
-        DB.query(qry).map.should == [@e1,@e2,@e4]
+        DB.query(qry).map.should == [@e1, @e2, @e4]
       end
 
     end

@@ -31,9 +31,6 @@ class OrientDB::Database
     native_query sql_query
   end
 
-  alias :find :query
-  alias :all :query
-
   def first(sql_query = nil)
     sql_query = prepare_sql_query(sql_query).setLimit(1)
     query(sql_query).first
@@ -44,52 +41,12 @@ class OrientDB::Database
     case sql_query
       when OrientDB::SQLSynchQuery
         sql_query
+      when OrientDB::SQL::Query
+        sql_query.to_sql_synch_query
       when String
-        OrientDB::SQLSynchQuery.new sql_query
-      when Hash
-        OrientDB::SQLSynchQuery.new sql_query_from_hash(sql_query)
+        OrientDB::SQLSynchQuery.new(sql_query)
       else
         raise "Unknown query type"
-    end
-  end
-
-  def sql_query_from_hash(options = {})
-    target = options.delete :oclass
-    raise "Missing oclass name" unless target
-
-    columns    = options.delete(:columns) || '*'
-    order      = options.delete :order
-    order_sql  = order ? " ORDER BY #{order}" : ''
-    limit      = options.delete :limit
-    limit_sql  = limit ? " LIMIT #{limit}" : ''
-    range_low  = options.delete(:range_low) || options.delete(:range)
-    range_high = options.delete :range_high
-    range_sql  = range_low ? " RANGE #{range_low}#{range_high ? ",#{range_high}" : ''}" : ''
-    fields     = options.map { |field, value| "#{field} #{operator_for(value)} #{quote(value)}" }
-    where_sql  = fields.size > 0 ? " WHERE #{fields.join(' AND ')}" : ''
-
-    "SELECT #{columns} FROM #{target}" + where_sql + order_sql + limit_sql + range_sql
-  end
-
-  def operator_for(value)
-    case value
-      when Integer, Float, Symbol
-        "="
-      when String
-        value.index('%') ? "LIKE" : "="
-      when Array
-        "IN"
-    end
-  end
-
-  def quote(value)
-    case value
-      when Integer, Float, Symbol
-        value.to_s
-      when String
-        "'#{value}'"
-      when Array
-        "[" + value.map { |x| quote(x) }.join(", ") + "]"
     end
   end
 

@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{orientdb}
-  s.version = "0.0.8"
+  s.version = "0.0.9"
   s.platform = %q{jruby}
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.3.6") if s.respond_to? :required_rubygems_version=
   s.authors = ["Adrian Madrid"]
-  s.date = %q{2011-01-14}
+  s.date = %q{2011-01-17}
   s.default_executable = %q{orientdb_console}
   s.description = %q{Simple JRuby wrapper for the OrientDB.}
   s.email = ["aemadrid@gmail.com"]
@@ -45,6 +45,8 @@ Gem::Specification.new do |s|
     "lib/orientdb/property.rb",
     "lib/orientdb/record.rb",
     "lib/orientdb/schema.rb",
+    "lib/orientdb/sql.rb",
+    "lib/orientdb/sql_ext.rb",
     "lib/orientdb/sql_query.rb",
     "lib/orientdb/storage.rb",
     "lib/orientdb/user.rb",
@@ -54,7 +56,9 @@ Gem::Specification.new do |s|
     "spec/document_spec.rb",
     "spec/orientdb_spec.rb",
     "spec/spec.opts",
-    "spec/spec_helper.rb"
+    "spec/spec_basic_helper.rb",
+    "spec/spec_helper.rb",
+    "spec/sql_spec.rb"
   ]
   s.homepage = %q{http://rubygems.org/gems/orientdb}
   s.require_paths = ["lib"]

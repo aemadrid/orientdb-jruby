@@ -10,7 +10,6 @@ module OrientDB
       def initialize(type)
         @type       = type
         @conditions = []
-        add(conds) if conds
       end
 
       def type
@@ -217,10 +216,6 @@ module OrientDB
         right_index = regexp.rindex('/') - 1
         str         = regexp[left_index..right_index]
         "'#{str}'"
-      end
-
-      def quote(value)
-        self.class.quote value
       end
 
       private

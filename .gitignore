@@ -22,6 +22,7 @@ tmtags
 ## PROJECT::GENERAL
 .bundle
 coverage
+coverage.data
 rdoc
 pkg
 

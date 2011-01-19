@@ -10,4 +10,14 @@ module OrientDB
 
   end
 
+  class SchemaType
+
+    def inspect
+      "#<OrientDB::SchemaType:#{name}>"
+    end
+
+    alias :to_s :inspect
+
+  end
+
 end

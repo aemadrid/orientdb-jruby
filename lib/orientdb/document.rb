@@ -17,7 +17,7 @@ module OrientDB
     end
 
     def field?(name)
-      contains_field(name.to_s) || schema_class.exists_property?(name.to_s)
+      contains_field(name.to_s) || (schema_class && schema_class.exists_property?(name.to_s))
     end
 
     def respond_to?(method_name)

@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{orientdb}
-  s.version = "0.0.11"
+  s.version = "0.0.12"
   s.platform = %q{jruby}
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.3.6") if s.respond_to? :required_rubygems_version=
   s.authors = ["Adrian Madrid"]
-  s.date = %q{2011-01-18}
+  s.date = %q{2011-01-20}
   s.default_executable = %q{orientdb_console}
   s.description = %q{Simple JRuby wrapper for the OrientDB.}
   s.email = ["aemadrid@gmail.com"]
@@ -38,7 +38,6 @@ Gem::Specification.new do |s|
     "lib/orientdb.rb",
     "lib/orientdb/constants.rb",
     "lib/orientdb/database.rb",
-    "lib/orientdb/database_pool.rb",
     "lib/orientdb/document.rb",
     "lib/orientdb/ext.rb",
     "lib/orientdb/oclass.rb",
@@ -63,14 +62,13 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://rubygems.org/gems/orientdb}
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{orientdb}
-  s.rubygems_version = %q{1.3.6}
+  s.rubygems_version = %q{1.4.2}
   s.summary = %q{JRuby wrapper for OrientDB}
 
   if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_development_dependency(%q<awesome_print>, [">= 0"])
       s.add_development_dependency(%q<rspec>, [">= 2.4"])
     else

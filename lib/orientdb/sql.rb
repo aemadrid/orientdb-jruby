@@ -17,20 +17,15 @@ module OrientDB
       end
 
       def add(*conds)
-        puts "add : #{conds.inspect}"
         conds.each do |cond|
           case cond
             when ConditionExpression
-              puts "ConditionExpression : #{cond.class.name} : #{cond.inspect}"
               conditions << cond.to_s
             when Hash
-              puts "Hash : #{cond.class.name} : #{cond.inspect}"
               cond.each { |k, v| conditions << "#{k} = #{Query.quote(v)}" }
             when Array
-              puts "Array : #{cond.class.name} : #{cond.inspect}"
               cond.each { |x| conditions << x.to_s }
             else
-              puts "else : #{cond.class.name} : #{cond.inspect}"
               conditions << cond.to_s
           end
         end

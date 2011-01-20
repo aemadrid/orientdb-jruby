@@ -4,22 +4,28 @@ unless defined?(SPEC_HELPER_LOADED)
 
   require 'spec_basic_helper'
 
-  puts "ENV : #{ENV.keys.sort.join(" : ")}"
-  puts "ENV : #{ENV.inspect}"
-
   TEST_URL      = ENV["ORIENTDB_TEST_URL"]
   TEST_USERNAME = ENV["ORIENTDB_TEST_USERNAME"]
   TEST_PASSWORD = ENV["ORIENTDB_TEST_PASSWORD"]
+  TEST_POOLED   = ENV["ORIENTDB_TEST_POOLED"].to_s[0, 1].downcase == 't'
+
+  puts "ENV :: TEST_URL : #{TEST_URL} | TEST_USERNAME : #{TEST_USERNAME} | TEST_PASSWORD : #{TEST_PASSWORD} | TEST_POOLED : #{TEST_POOLED}"
 
   if TEST_URL && TEST_USERNAME && TEST_PASSWORD
-    puts ">> TEST_DB URL : #{TEST_URL} : #{TEST_USERNAME} : #{TEST_PASSWORD}"
-    DB = OrientDB::Database.new(TEST_URL).open(TEST_USERNAME, TEST_PASSWORD)
+    if TEST_POOLED
+      puts ">> Testing [#{TEST_URL[0,TEST_URL.index(':')]}] Pooled Database :: TEST_DB URL : #{TEST_URL} : #{TEST_USERNAME} : #{TEST_PASSWORD}"
+      DB = OrientDB::DocumentDatabasePool.connect(TEST_URL, TEST_USERNAME, TEST_PASSWORD)
+    else
+      puts ">> Testing [#{TEST_URL[0,TEST_URL.index(':')]}] Database :: TEST_DB URL : #{TEST_URL} : #{TEST_USERNAME} : #{TEST_PASSWORD}"
+      DB = OrientDB::DocumentDatabase.connect(TEST_URL, TEST_USERNAME, TEST_PASSWORD)
+    end
   else
     TEST_DB_PATH = "#{TEMP_DIR}/databases/db_#{rand(999) + 1}"
+    puts ">> Testing [local] Database :: TEST_DB PATH : #{TEST_DB_PATH}"
     FileUtils.remove_dir "#{TEMP_DIR}/databases/"
     FileUtils.mkdir_p TEST_DB_PATH
     puts ">> TEST_DB PATH : #{TEST_DB_PATH}"
-    DB = OrientDB::Database.new("local:#{TEST_DB_PATH}/test").create
+    DB = OrientDB::DocumentDatabase.new("local:#{TEST_DB_PATH}/test").create
   end
 
   module Helpers

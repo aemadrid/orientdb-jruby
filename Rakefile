@@ -31,6 +31,18 @@ rescue LoadError
 end
 
 require 'rspec/core/rake_task'
+
+#
+# Test a local database:
+# rake spec
+#
+# Test a remote database:
+# ORIENTDB_TEST_URL=remote:localhost/test ORIENTDB_TEST_USERNAME=admin ORIENTDB_TEST_PASSWORD=admin ORIENTDB_TEST_POOLED=true rake spec
+#
+# Test a pooled remote database:
+# ORIENTDB_TEST_URL=remote:localhost/test ORIENTDB_TEST_USERNAME=admin ORIENTDB_TEST_PASSWORD=admin ORIENTDB_TEST_POOLED=true rake spec
+#
+desc "Run specs"
 RSpec::Core::RakeTask.new(:spec)
 
 desc "Run all examples using rcov"

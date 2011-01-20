@@ -2,7 +2,7 @@ require File.expand_path("../spec_helper", __FILE__)
 
 describe "OrientDB" do
 
-  describe "Database" do
+  describe "DocumentDatabase" do
 
     before :all do
       create_classes
@@ -72,7 +72,7 @@ describe "OrientDB" do
       end
 
       it "should get all rows for a class" do
-        DB.query('SELECT FROM employee').map { |x| x.name }.sort.should == @employees.map { |x| x.name }.sort
+        DB.all('SELECT FROM employee').map { |x| x.name }.sort.should == @employees.map { |x| x.name }.sort
       end
 
       it "should create a valid query and return the right results" do
@@ -87,7 +87,7 @@ describe "OrientDB" do
 
       it "should find rows by values in arrays" do
         qry = DB.prepare_sql_query "SELECT * FROM #{@oclass} WHERE 'admin' IN groups"
-        DB.query(qry).map { |x| x.name }.sort.should == [@e1, @e2, @e4].map { |x| x.name }.sort
+        DB.all(qry).map { |x| x.name }.sort.should == [@e1, @e2, @e4].map { |x| x.name }.sort
       end
 
     end

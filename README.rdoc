@@ -16,7 +16,7 @@ Let's get the gem installed and test out the interactive console.
   shell> gem install orientdb
   shell> orientdb_console
 
-  >> db = OrientDB::Database.connect "remote:localhost/demo", 'admin', 'admin'
+  >> db = OrientDB::DocumentDatabase.connect "remote:localhost/demo", 'admin', 'admin'
   => #<OrientDB::Database:0x6a346239 @proxy_object=#<Java::ComOrientechnologiesOrientCoreDbDocument::ODatabaseDocumentTx:0x14860315>
   >> customer = db.get_class "Customer"
   => #<OrientDB::OClass:Customer name:string>

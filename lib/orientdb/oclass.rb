@@ -84,13 +84,13 @@ module OrientDB
         else
           if use_cluster
             cluster = db.storage.get_cluster use_cluster
-            klass   = db.schema.create_class name, use_cluster
+            klass   = db.schema.create_class name, cluster
           elsif add_cluster && !db.storage.cluster_names.include?(name.downcase)
             cluster = db.storage.add_cluster name.downcase, STORAGE_TYPES[:physical]
             klass   = db.schema.create_class name, cluster
           else
             klass   = db.schema.create_class name
-            cluster = db.storage.get_cluster klass.cluster_ids.first
+            cluster = db.storage.get_cluster klass.cluster_ids.first rescue nil
           end
         end
 

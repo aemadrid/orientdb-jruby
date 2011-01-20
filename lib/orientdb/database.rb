@@ -8,17 +8,16 @@ class OrientDB::Database
 
   def command(sql_command = nil)
     sql_command = prepare_sql_command sql_command
-    exc_cmd     = sql_command.execute
-    native_command exc_cmd
+    native_command(sql_command).execute(true)
   end
 
   def prepare_sql_command(sql_command)
     return if sql_command.nil?
     case sql_command
-      when SQLCommand
+      when OrientDB::SQLCommand
         sql_command
       when String
-        SQLCommand.new sql_command
+        OrientDB::SQLCommand.new sql_command
       else
         raise "Unknown command type"
     end
@@ -64,6 +63,16 @@ class OrientDB::Database
 
   def get_or_create_class(klass_name, fields = {})
     get_class(klass_name) || create_class(klass_name, fields)
+  end
+
+  def drop_class(klass_name)
+    schema.remove_class(klass_name) if schema.exists_class(klass_name)
+  end
+
+  def recreate_class(klass_name, fields = {})
+    command "DELETE FROM #{klass_name}"
+    drop_class klass_name
+    create_class klass_name, fields
   end
 
   alias :each_in_class :browseClass

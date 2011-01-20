@@ -11,6 +11,7 @@ if ARGV.include?('test:db')
   puts ">> TEST_DB PATH : #{TEST_DB_PATH}"
 
   require 'fileutils'
+  FileUtils.remove_dir TEST_DB_PATH
   FileUtils.mkdir_p TEST_DB_PATH
   DB = OrientDB::Database.new("local:#{TEST_DB_PATH}/test").create
 end

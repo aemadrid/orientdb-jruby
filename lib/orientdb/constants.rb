@@ -16,7 +16,7 @@ module OrientDB
   RemoteStorage  = com.orientechnologies.orient.client.remote.OStorageRemote
   Schema         = com.orientechnologies.orient.core.metadata.schema.OSchema
   SchemaType     = com.orientechnologies.orient.core.metadata.schema.OType
-  SQLSynchQuery       = com.orientechnologies.orient.core.sql.query.OSQLSynchQuery
+  SQLSynchQuery  = com.orientechnologies.orient.core.sql.query.OSQLSynchQuery
   SQLCommand     = com.orientechnologies.orient.core.sql.OCommandSQL
   User           = com.orientechnologies.orient.core.metadata.security.OUser
 

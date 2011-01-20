@@ -9,14 +9,14 @@ describe "OrientDB" do
     end
 
     it "should create a valid simple table" do
-      exp_class = "#<OrientDB::OClass:person name=string>"
+      exp_class = "#<OrientDB::OClass:person name=#<orientdb::schematype:string>>"
       exp_props = ["#<OrientDB::Propery:name type=string indexed=false mandatory=false not_null=false>"]
       @person_class.to_s.should == exp_class
       @person_class.properties.map { |x| x.to_s }.should == exp_props
     end
 
     it "should create a valid simple descendant table" do
-      exp_class = "#<OrientDB::OClass:customer super=person tab=float name=string>"
+      exp_class = "#<OrientDB::OClass:customer super=person tab=#<orientdb::schematype:float> name=#<orientdb::schematype:string>>"
       exp_props = [
         "#<OrientDB::Propery:tab type=decimal indexed=false mandatory=false not_null=false>",
         "#<OrientDB::Propery:name type=string indexed=false mandatory=false not_null=false>"
@@ -26,7 +26,7 @@ describe "OrientDB" do
     end
 
     it "should create a complex table" do
-      exp_class = "#<OrientDB::OClass:invoice number=integer(idx) customer=link sold_on=date total=float lines=linklist>"
+      exp_class = "#<OrientDB::OClass:invoice number=#<orientdb::schematype:integer>(idx) customer=#<orientdb::schematype:link> sold_on=#<orientdb::schematype:date> total=#<orientdb::schematype:float> lines=#<orientdb::schematype:linklist>>"
       exp_props = [
         "#<OrientDB::Propery:number type=int indexed=true mandatory=true not_null=false>",
         "#<OrientDB::Propery:customer type=link indexed=false mandatory=false not_null=true>",
@@ -72,7 +72,7 @@ describe "OrientDB" do
       end
 
       it "should get all rows for a class" do
-        DB.query('SELECT FROM employee').map.should == @employees
+        DB.query('SELECT FROM employee').map { |x| x.name }.sort.should == @employees.map { |x| x.name }.sort
       end
 
       it "should create a valid query and return the right results" do
@@ -87,7 +87,7 @@ describe "OrientDB" do
 
       it "should find rows by values in arrays" do
         qry = DB.prepare_sql_query "SELECT * FROM #{@oclass} WHERE 'admin' IN groups"
-        DB.query(qry).map.should == [@e1, @e2, @e4]
+        DB.query(qry).map { |x| x.name }.sort.should == [@e1, @e2, @e4].map { |x| x.name }.sort
       end
 
     end

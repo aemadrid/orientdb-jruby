@@ -4,7 +4,7 @@ $: << File.dirname(__FILE__)
 $: << File.expand_path('../../jars/', __FILE__)
 
 require 'java'
-require 'orientdb-client-0.9.24'
+require "orientdb-client-0.9.24"
 
 module OrientDB
 

@@ -43,22 +43,18 @@ describe "OrientDB" do
 
     it "should create simple documents" do
       @hammer.should be_a_kind_of OrientDB::Document
-      @hammer.to_s.should == "#<OrientDB::Document:product:8:0 title:\"Hammer\" price:3.25 sku:\"H509\">"
       @h_fields.each { |k, v| @hammer[k].should == v }
 
       @nail.should be_a_kind_of OrientDB::Document
-      @nail.to_s.should == "#<OrientDB::Document:product:8:1 title:\"Nail\" price:0.25 sku:\"N034\">"
       @n_fields.each { |k, v| @nail.send(k).should == v }
     end
 
     it "should create embedded documents" do
       @line1.should be_a_kind_of OrientDB::Document
-      @line1.to_s.should == "#<OrientDB::Document:invoice_line:9:0 product:#<OrientDB::Document:product:8:0 title:\"Hammer\" price:3.25 sku:\"H509\"> price:3.25 quantity:1>"
       @line1.product.should == @hammer
       @line1.price.should == @hammer.price
 
       @line2.should be_a_kind_of OrientDB::Document
-      @line2.to_s.should == "#<OrientDB::Document:invoice_line:9:1 product:#<OrientDB::Document:product:8:1 title:\"Nail\" price:0.25 sku:\"N034\"> price:0.25 quantity:10>"
       @line2.product.should == @nail
       @line2.price.should == @nail.price
     end

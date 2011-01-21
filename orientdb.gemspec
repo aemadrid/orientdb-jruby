@@ -46,7 +46,6 @@ Gem::Specification.new do |s|
     "lib/orientdb/schema.rb",
     "lib/orientdb/sql.rb",
     "lib/orientdb/sql_ext.rb",
-    "lib/orientdb/sql_query.rb",
     "lib/orientdb/storage.rb",
     "lib/orientdb/user.rb",
     "lib/orientdb/version.rb",

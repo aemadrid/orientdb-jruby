@@ -81,8 +81,11 @@ describe "OrientDB" do
       end
 
       it "should find rows by simple field values" do
-        DB.first("SELECT * FROM employee WHERE name = 'Mark'").should == @e1
         DB.first('SELECT * FROM employee WHERE age = 37').should == @e2
+      end
+
+      it "should find rows by simple field values" do
+        DB.find_by_rid(@e3.rid).rid.should == @e3.rid
       end
 
       it "should find rows by values in arrays" do

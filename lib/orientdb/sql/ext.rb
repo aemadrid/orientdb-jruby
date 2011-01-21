@@ -59,32 +59,34 @@ module OrientDB
     end
 
     module ConditionalExtension
+      include OrientDB::SQL::UtilsMixin
+
       def like(value)
-        "#{to_s} LIKE #{Query.quote(value)}"
+        "#{to_s} LIKE #{quote(value)}"
       end
 
       def eq(value)
-        "#{to_s} = #{Query.quote(value)}"
+        "#{to_s} = #{quote(value)}"
       end
 
       def lt(value)
-        "#{to_s} < #{Query.quote(value)}"
+        "#{to_s} < #{quote(value)}"
       end
 
       def lte(value)
-        "#{to_s} <= #{Query.quote(value)}"
+        "#{to_s} <= #{quote(value)}"
       end
 
       def gt(value)
-        "#{to_s} > #{Query.quote(value)}"
+        "#{to_s} > #{quote(value)}"
       end
 
       def gte(value)
-        "#{to_s} >= #{Query.quote(value)}"
+        "#{to_s} >= #{quote(value)}"
       end
 
       def ne(value)
-        "#{to_s} <> #{Query.quote(value)}"
+        "#{to_s} <> #{quote(value)}"
       end
 
       def is_null
@@ -96,35 +98,37 @@ module OrientDB
       end
 
       def in(*values)
-        "#{to_s} IN #{Query.quote(values)}"
+        "#{to_s} IN #{quote(values)}"
       end
 
       def contains(field, value)
-        "#{to_s} contains (#{field} = #{Query.quote(value)})"
+        "#{to_s} contains (#{field} = #{quote(value)})"
       end
 
       def contains_all(field, value)
-        "#{to_s} containsAll (#{field} = #{Query.quote(value)})"
+        "#{to_s} containsAll (#{field} = #{quote(value)})"
       end
 
       def contains_key(value)
-        "#{to_s} containsKey #{Query.quote(value)}"
+        "#{to_s} containsKey #{quote(value)}"
       end
 
       def contains_value(value)
-        "#{to_s} containsValue #{Query.quote(value)}"
+        "#{to_s} containsValue #{quote(value)}"
       end
 
       def contains_text(value)
-        "#{to_s} containsText #{Query.quote(value)}"
+        "#{to_s} containsText #{quote(value)}"
       end
 
       def matches(value)
-        "#{to_s} matches #{Query.quote(value)}"
+        "#{to_s} matches #{quote(value)}"
       end
     end
 
     module FieldOperatorExtension
+      include OrientDB::SQL::UtilsMixin
+
       # Avoided overriding the native method
       def odb_length
         "#{to_s}.length()"
@@ -145,29 +149,29 @@ module OrientDB
 
       # Avoided overriding the native method
       def odb_left(length)
-        "#{to_s}.left(#{Query.quote(length)})"
+        "#{to_s}.left(#{quote(length)})"
       end
 
       # Avoided overriding the native method
       def odb_right(length)
-        "#{to_s}.right(#{Query.quote(length)})"
+        "#{to_s}.right(#{quote(length)})"
       end
 
       def sub_string(start, length = nil)
-        "#{to_s}.subString(#{Query.quote(start)}#{length ? ", #{Query.quote(length)}" : ''})"
+        "#{to_s}.subString(#{quote(start)}#{length ? ", #{quote(length)}" : ''})"
       end
 
       def char_at(pos)
-        "#{to_s}.charAt(#{Query.quote(pos)})"
+        "#{to_s}.charAt(#{quote(pos)})"
       end
 
       def index_of(string, start = nil)
-        "#{to_s}.indexOf(#{Query.quote(string)}#{start ? ", #{Query.quote(start)}" : ''})"
+        "#{to_s}.indexOf(#{quote(string)}#{start ? ", #{quote(start)}" : ''})"
       end
 
       # Avoided overriding the native method
       def odb_format(frmt)
-        "#{to_s}.format(#{Query.quote(frmt)})"
+        "#{to_s}.format(#{quote(frmt)})"
       end
 
       # Avoided overriding the native method
@@ -201,6 +205,7 @@ module OrientDB
     end
 
     module BundledFunctionExtension
+      include OrientDB::SQL::UtilsMixin
 
       # Avoided overriding the native method
       def odb_count
@@ -233,7 +238,7 @@ module OrientDB
 
       # Avoided overriding the native method
       def odb_format_str(*args)
-        "format('#{to_s}', #{args.map{|x| Query.quote(x)}.join(', ')})"
+        "format('#{to_s}', #{args.map{|x| quote(x)}.join(', ')})"
       end
     end
   end

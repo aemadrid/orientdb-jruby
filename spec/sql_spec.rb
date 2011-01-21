@@ -4,13 +4,7 @@ describe "OrientDB" do
 
   describe "SQL" do
 
-    describe "Query" do
-
-      it "should do a blank query" do
-        @q = OrientDB::SQL::Query.new
-        @q.should be_a_kind_of OrientDB::SQL::Query
-        @q.to_s.should == 'SELECT FROM'
-      end
+    describe "Common" do
 
       describe "quote" do
         it "should quote numeric values correctly" do
@@ -47,6 +41,44 @@ describe "OrientDB" do
           OrientDB::SQL::Query.quote(:@size).should == "@size"
           OrientDB::SQL::Query.quote(:@type).should == "@type"
         end
+      end
+
+      describe "select_single_string" do
+        it "should split extend and alias strings correctly" do
+          OrientDB::SQL::Query.select_single_string('a__b___c').should == 'a.b AS c'
+        end
+
+        it "should split extend strings correctly" do
+          OrientDB::SQL::Query.select_single_string('a__b').should == 'a.b'
+        end
+
+        it "should split extended strings correctly" do
+          OrientDB::SQL::Query.select_single_string('a__b__c').should == 'a.b.c'
+        end
+
+        it "should split alias strings correctly" do
+          OrientDB::SQL::Query.select_single_string('a___c').should == 'a AS c'
+        end
+      end
+
+      describe "field_name" do
+        it "should split simple names correctly" do
+          OrientDB::SQL::Query.field_name(:a__b).should == 'a.b'
+        end
+
+        it "should split longer names correctly" do
+          OrientDB::SQL::Query.field_name(:a__b__c).should == 'a.b.c'
+        end
+      end
+
+    end
+
+    describe "Query" do
+
+      it "should do a blank query" do
+        @q = OrientDB::SQL::Query.new
+        @q.should be_a_kind_of OrientDB::SQL::Query
+        @q.to_s.should == 'SELECT FROM'
       end
 
       describe "SELECT" do
@@ -661,6 +693,132 @@ describe "OrientDB" do
         end
       end
     end
+  end
+
+  describe "INSERT" do
+
+    before :each do
+      @q = OrientDB::SQL::Insert.new
+    end
+
+    it "should handle basic oclass inserts" do
+      @q.oclass('Person').values(:name => "Martin").to_s.should == "INSERT INTO Person (name) VALUES ('Martin')"
+    end
+
+    it "should handle basic oclass inserts" do
+      @q.cluster('person').values(:name => "Martin").to_s.should == "INSERT INTO cluster:person (name) VALUES ('Martin')"
+    end
+
+    it "should handle complex oclass inserts" do
+      @q.oclass('Person').fields(:name => "Martin").values(:age => 39).to_s.should == "INSERT INTO Person (name, age) VALUES ('Martin', 39)"
+    end
+
+    it "should handle array oclass inserts" do
+      @q.oclass('Person').fields(:name, :age).values("Martin", 39).to_s.should == "INSERT INTO Person (name, age) VALUES ('Martin', 39)"
+    end
 
   end
+
+  describe "UPDATE" do
+
+    before :each do
+      @q = OrientDB::SQL::Update.new
+    end
+
+    it "should handle basic oclass SET update" do
+      @q.oclass('Person').values(:name => "Martin").to_s.should == "UPDATE Person SET name = 'Martin'"
+    end
+
+    it "should handle basic cluster SET update" do
+      @q.cluster('person').values(:name => "Martin").to_s.should == "UPDATE cluster:person SET name = 'Martin'"
+    end
+
+    it "should handle complex oclass SET updates" do
+      @q.oclass('Person').fields(:name => "Martin").values(:age => 39).to_s.should == "UPDATE Person SET name = 'Martin', age = 39"
+    end
+
+    it "should handle array oclass REMOVE a field updates" do
+      @q.oclass('Person').action(:remove).fields(:name).to_s.should == "UPDATE Person REMOVE name"
+    end
+
+    it "should handle array oclass REMOVE many fields updates" do
+      @q.oclass('Person').action(:remove).fields(:name, :age).to_s.should == "UPDATE Person REMOVE name, age"
+    end
+
+    it "should handle basic oclass REMOVE a value from a collection update" do
+      @q.oclass('Person').action(:remove).values(:name => "Martin").to_s.should == "UPDATE Person REMOVE name = 'Martin'"
+    end
+
+    it "should handle basic oclass ADD a value into a collection update" do
+      @q.oclass('Person').action(:add).values(:name => "Martin").to_s.should == "UPDATE Person ADD name = 'Martin'"
+    end
+
+    it "should handle basic oclass ADD many values into a collection update" do
+      @q.oclass('Person').action(:add).values(:name => "Martin").values(:age => 39).to_s.should == "UPDATE Person ADD name = 'Martin', age = 39"
+    end
+
+    it "should handle simple hashes for conditions" do
+      @q.oclass('Person').values(:age => 39).where(:a => 1).to_s.should == 'UPDATE Person SET age = 39 WHERE a = 1'
+    end
+
+    it "should handle simple arrays for conditions" do
+      @q.oclass('Person').values(:age => 39).where(['a > 1', 'b < 3', 'c = 5']).to_s.should == 'UPDATE Person SET age = 39 WHERE a > 1 AND b < 3 AND c = 5'
+    end
+
+    it "should handle concatenation for conditions" do
+      @q.oclass('Person').values(:age => 39).where(:a => 1).where(:b => 2).to_s.should == 'UPDATE Person SET age = 39 WHERE a = 1 AND b = 2'
+    end
+
+    it "should handle overriding for conditions" do
+      @q.oclass('Person').values(:age => 39).where(:a => 1).where!(:b => 2).to_s.should == 'UPDATE Person SET age = 39 WHERE b = 2'
+    end
+
+    it "should handle simple joined AND conditions for conditions" do
+      @q.oclass('Person').values(:age => 39).where(:a => 1).and(:b => 2).to_s.should == 'UPDATE Person SET age = 39 WHERE a = 1 AND b = 2'
+    end
+
+    it "should handle simple joined OR conditions for conditions" do
+      @q.oclass('Person').values(:age => 39).where(:a => 1).or(:b => 2).to_s.should == 'UPDATE Person SET age = 39 WHERE a = 1 OR b = 2'
+    end
+  end
+
+  describe "DELETE" do
+
+    before :each do
+      @q = OrientDB::SQL::Delete.new
+    end
+
+    it "should handle basic oclass" do
+      @q.oclass('Person').to_s.should == "DELETE FROM Person"
+    end
+
+    it "should handle basic cluster" do
+      @q.cluster('person').to_s.should == "DELETE FROM cluster:person"
+    end
+
+    it "should handle simple hashes for conditions" do
+      @q.oclass('Person').where(:a => 1).to_s.should == 'DELETE FROM Person WHERE a = 1'
+    end
+
+    it "should handle simple arrays for conditions" do
+      @q.oclass('Person').where(['a > 1', 'b < 3', 'c = 5']).to_s.should == 'DELETE FROM Person WHERE a > 1 AND b < 3 AND c = 5'
+    end
+
+    it "should handle concatenation for conditions" do
+      @q.oclass('Person').where(:a => 1).where(:b => 2).to_s.should == 'DELETE FROM Person WHERE a = 1 AND b = 2'
+    end
+
+    it "should handle overriding for conditions" do
+      @q.oclass('Person').where(:a => 1).where!(:b => 2).to_s.should == 'DELETE FROM Person WHERE b = 2'
+    end
+
+    it "should handle simple joined AND conditions for conditions" do
+      @q.oclass('Person').where(:a => 1).and(:b => 2).to_s.should == 'DELETE FROM Person WHERE a = 1 AND b = 2'
+    end
+
+    it "should handle simple joined OR conditions for conditions" do
+      @q.oclass('Person').where(:a => 1).or(:b => 2).to_s.should == 'DELETE FROM Person WHERE a = 1 OR b = 2'
+    end
+  end
+
 end

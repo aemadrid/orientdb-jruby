@@ -6,13 +6,14 @@ module OrientDB
       command(sql_command).execute(true)
     end
 
-    def prepare_sql_command(sql_command)
-      return if sql_command.nil?
-      case sql_command
+    def prepare_sql_command(command)
+      return if command.nil?
+      return command.to_sql_command if command.respond_to?(:to_sql_command)
+      case command
         when OrientDB::SQLCommand
-          sql_command
+          command
         when String
-          OrientDB::SQLCommand.new sql_command
+          OrientDB::SQLCommand.new command
         else
           raise "Unknown command type"
       end
@@ -28,15 +29,22 @@ module OrientDB
       query(sql_query).first
     end
 
-    def prepare_sql_query(sql_query)
-      return if sql_query.nil?
-      case sql_query
+    def find_by_rid(rid)
+      first "SELECT FROM #{rid}"
+    end
+
+    def find_by_rids(*rids)
+      all "SELECT FROM [#{rids.map{|x| x.to_s}.join(', ')}]"
+    end
+
+    def prepare_sql_query(query)
+      return if query.nil?
+      return query.to_sql_query if query.respond_to?(:to_sql_query)
+      case query
         when OrientDB::SQLSynchQuery
-          sql_query
-        when OrientDB::SQL::Query
-          sql_query.to_sql_synch_query
+          query
         when String
-          OrientDB::SQLSynchQuery.new(sql_query)
+          OrientDB::SQLSynchQuery.new(query)
         else
           raise "Unknown query type"
       end

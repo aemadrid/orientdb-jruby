@@ -1,10 +1,6 @@
 module OrientDB
 
   class RecordList
-    def jruby_value
-      map
-    end
-
     def inspect
       "#<OrientDB::RecordList:#{toString}>"
     end

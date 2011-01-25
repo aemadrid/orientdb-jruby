@@ -9,14 +9,14 @@ describe "OrientDB" do
     end
 
     it "should create a valid simple table" do
-      exp_class = "#<OrientDB::OClass:person name=#<orientdb::schematype:string>>"
+      exp_class = "#<OrientDB::OClass:person name=STRING>"
       exp_props = ["#<OrientDB::Propery:name type=string indexed=false mandatory=false not_null=false>"]
       @person_class.to_s.should == exp_class
       @person_class.properties.map { |x| x.to_s }.should == exp_props
     end
 
     it "should create a valid simple descendant table" do
-      exp_class = "#<OrientDB::OClass:customer super=person tab=#<orientdb::schematype:float> name=#<orientdb::schematype:string>>"
+      exp_class = "#<OrientDB::OClass:customer super=person tab=FLOAT name=STRING>"
       exp_props = [
         "#<OrientDB::Propery:tab type=decimal indexed=false mandatory=false not_null=false>",
         "#<OrientDB::Propery:name type=string indexed=false mandatory=false not_null=false>"
@@ -26,7 +26,7 @@ describe "OrientDB" do
     end
 
     it "should create a complex table" do
-      exp_class = "#<OrientDB::OClass:invoice number=#<orientdb::schematype:integer>(idx) customer=#<orientdb::schematype:link> sold_on=#<orientdb::schematype:date> total=#<orientdb::schematype:float> lines=#<orientdb::schematype:linklist>>"
+      exp_class = "#<OrientDB::OClass:invoice number=INTEGER(idx) customer=LINK sold_on=DATE total=FLOAT lines=LINKLIST>"
       exp_props = [
         "#<OrientDB::Propery:number type=int indexed=true mandatory=true not_null=false>",
         "#<OrientDB::Propery:customer type=link indexed=false mandatory=false not_null=true>",

@@ -20,7 +20,7 @@ module OrientDB::SQL
           "[" + value.map { |x| quote(x) }.join(", ") + "]"
         when Regexp
           quote_regexp(value)
-        when OrientDB::SQL::LiteralExpresion
+        when OrientDB::SQL::LiteralExpression
           value.to_s
         else
           quote value.to_s

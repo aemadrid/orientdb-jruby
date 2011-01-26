@@ -41,6 +41,13 @@ describe "OrientDB" do
           OrientDB::SQL::Query.quote(:@size).should == "@size"
           OrientDB::SQL::Query.quote(:@type).should == "@type"
         end
+
+        it "should quote literal_expressions properly" do
+          value = OrientDB::SQL::LiteralExpression.new "@this"
+          OrientDB::SQL::Query.quote(:@this).should == "@this"
+          value = OrientDB::SQL::LiteralExpression.new :@this
+          OrientDB::SQL::Query.quote(:@this).should == "@this"
+        end
       end
 
       describe "select_single_string" do
@@ -342,6 +349,10 @@ describe "OrientDB" do
           end
 
           describe "Conditional" do
+            it "should work" do
+              :name.lit.should == OrientDB::SQL::LiteralExpression.new("name")
+            end
+
             it "#like should work" do
               :name.like("test%").should == "name LIKE 'test%'"
             end
@@ -524,6 +535,10 @@ describe "OrientDB" do
           end
 
           describe "Conditional" do
+            it "should work" do
+              'name'.lit.should == OrientDB::SQL::LiteralExpression.new("name")
+            end
+
             it "#like should work" do
               'name'.like("test%").should == "name LIKE 'test%'"
             end

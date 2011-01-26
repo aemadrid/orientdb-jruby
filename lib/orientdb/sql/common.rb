@@ -1,4 +1,5 @@
 module OrientDB::SQL
+
   module UtilsMixin
 
     def select_single_string(arg)
@@ -19,6 +20,10 @@ module OrientDB::SQL
           "[" + value.map { |x| quote(x) }.join(", ") + "]"
         when Regexp
           quote_regexp(value)
+        when OrientDB::SQL::LiteralExpresion
+          value.to_s
+        else
+          quote value.to_s
       end
     end
 
@@ -170,6 +175,24 @@ module OrientDB::SQL
 
   end
 
+  class LiteralExpression
+
+    def initialize(value)
+      @value = value.to_s
+    end
+
+    def to_s
+      @value
+    end
+
+    include Comparable
+
+    def <=>(other)
+      to_s <=> other.to_s
+    end
+
+  end
+
   class ConditionExpression
 
     attr_reader :conditions
@@ -213,5 +236,12 @@ module OrientDB::SQL
     def to_s
       "#{type} #{parens_conditions_str} "
     end
+
+    include Comparable
+
+    def <=>(other)
+      to_s <=> other.to_s
+    end
   end
+
 end

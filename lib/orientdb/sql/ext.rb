@@ -61,6 +61,10 @@ module OrientDB
     module ConditionalExtension
       include OrientDB::SQL::UtilsMixin
 
+      def lit
+        OrientDB::SQL::LiteralExpression.new to_s
+      end
+
       def like(value)
         "#{to_s} LIKE #{quote(value)}"
       end

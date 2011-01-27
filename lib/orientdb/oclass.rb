@@ -22,6 +22,7 @@ module OrientDB
         return false
       end
 
+      type = type.oclass if type.respond_to?(:oclass)
       case type
         when SchemaType
           prop = create_property property_name, type

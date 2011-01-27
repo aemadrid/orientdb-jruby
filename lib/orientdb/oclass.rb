@@ -3,6 +3,7 @@ module OrientDB
   class OClass
 
     def type_for(value)
+      value = value.oclass if value.respond_to?(:oclass)
       type = case value
         when OrientDB::SchemaType, OrientDB::OClass
           value

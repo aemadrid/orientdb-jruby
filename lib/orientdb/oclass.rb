@@ -5,18 +5,24 @@ module OrientDB
     def type_for(value)
       value = value.oclass if value.respond_to?(:oclass)
       type = case value
-        when OrientDB::SchemaType, OrientDB::OClass
-          value
-        when Symbol
-          FIELD_TYPES[value]
-        else
-          FIELD_TYPES[value.to_s.to_sym]
-        end
+               when OrientDB::SchemaType, OrientDB::OClass
+                 value
+               when String
+                 if schema.exists_class?(value)
+                   schema.get_class(value)
+                 else
+                   FIELD_TYPES[value.to_sym]
+                 end
+               when Symbol
+                 FIELD_TYPES[value]
+               else
+                 FIELD_TYPES[value.to_s.to_sym]
+             end
       raise "Uknown schema type for [#{value}]" unless type
       type
     end
 
-    def add(property_name, type, options = {})
+    def add(property_name, type, options = { })
       property_name = property_name.to_s
       if exists_property(property_name)
         puts "We already have that property name [#{property_name}]"
@@ -75,7 +81,7 @@ module OrientDB
 
     class << self
 
-      def create(db, name, fields = {})
+      def create(db, name, fields = { })
         name        = name.to_s
         add_cluster = fields.delete :add_cluster
         add_cluster = true if add_cluster.nil?
@@ -85,12 +91,12 @@ module OrientDB
           klass = db.get_class name
         else
           if use_cluster
-            klass   = db.schema.create_class name, use_cluster
+            klass = db.schema.create_class name, use_cluster
           elsif add_cluster && !db.storage.cluster_names.include?(name.downcase)
             cluster = db.storage.add_cluster name.downcase, STORAGE_TYPES[:physical]
             klass   = db.schema.create_class name, cluster
           else
-            klass   = db.schema.create_class name
+            klass = db.schema.create_class name
           end
         end
 
@@ -106,7 +112,7 @@ module OrientDB
                 klass.add property_name, type
               when Hash
                 options = type.dup
-                type = options.delete :type
+                type    = options.delete :type
                 klass.add property_name, type, options
               else
                 raise "Unknown field options [#{type.inspect}]"

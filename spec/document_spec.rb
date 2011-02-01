@@ -2,6 +2,34 @@ require File.expand_path("../spec_helper", __FILE__)
 
 describe "OrientDB" do
 
+  describe "RID" do
+    it "should create valid empty" do
+      rid = OrientDB::RID.new
+      rid.to_s == '-1:-1'
+      rid.valid?.should == true
+    end
+
+    it "should create valid saved" do
+      rid = OrientDB::RID.new '5:40'
+      rid.to_s == '5:40'
+      rid.valid?.should == true
+      rid.saved?.should == true
+      rid.unsaved?.should == false
+      rid.cluster_id.should == 5
+      rid.document_id.should == 40
+    end
+
+    it "should create valid unsaved" do
+      rid = OrientDB::RID.new '-1:-1'
+      rid.to_s == '5:40'
+      rid.valid?.should == true
+      rid.saved?.should == false
+      rid.unsaved?.should == true
+      rid.cluster_id.should == -1
+      rid.document_id.should == -1
+    end
+  end
+
   describe "Document" do
 
     before :all do

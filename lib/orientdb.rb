@@ -16,6 +16,7 @@ module OrientDB
 end
 
 require 'orientdb/ext'
+require 'orientdb/rid'
 require 'orientdb/constants'
 require 'orientdb/version'
 require 'orientdb/user'

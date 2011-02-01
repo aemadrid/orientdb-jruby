@@ -18,7 +18,7 @@ module OrientDB
                else
                  FIELD_TYPES[value.to_s.to_sym]
              end
-      raise "Uknown schema type for [#{value}]" unless type
+      raise "Uknown schema type for [#{value}] (#{value.class.name})" unless type
       type
     end
 

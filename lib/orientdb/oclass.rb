@@ -33,7 +33,7 @@ module OrientDB
       prop.set_mandatory !!options[:mandatory] unless options[:mandatory].nil?
       prop.set_not_null options[:not_null] unless options[:not_null].nil?
       unless options[:index].nil?
-        index_type = options[:index] == true ? INDEX_TYPES[:notunique] : type_for(options[:index])
+        index_type = options[:index] == true ? INDEX_TYPES[:notunique] : INDEX_TYPES[options[:index]]
         prop.createIndex index_type
       end
 
@@ -66,7 +66,6 @@ module OrientDB
     class << self
 
       def type_for(value)
-        value = value.orientdb_type if value.respond_to?(:orientdb_type)
         value = value.oclass if value.respond_to?(:oclass)
         type = case value
                  when OrientDB::SchemaType, OrientDB::OClass

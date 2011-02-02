@@ -3,23 +3,7 @@ module OrientDB
   class OClass
 
     def type_for(value)
-      value = value.oclass if value.respond_to?(:oclass)
-      type = case value
-               when OrientDB::SchemaType, OrientDB::OClass
-                 value
-               when String
-                 if schema.exists_class?(value)
-                   schema.get_class(value)
-                 else
-                   FIELD_TYPES[value.to_sym]
-                 end
-               when Symbol
-                 FIELD_TYPES[value]
-               else
-                 FIELD_TYPES[value.to_s.to_sym]
-             end
-      raise "Uknown schema type for [#{value}] (#{value.class.name})" unless type
-      type
+      self.class.type_for value
     end
 
     def add(property_name, type, options = { })
@@ -49,7 +33,7 @@ module OrientDB
       prop.set_mandatory !!options[:mandatory] unless options[:mandatory].nil?
       prop.set_not_null options[:not_null] unless options[:not_null].nil?
       unless options[:index].nil?
-        index_type = options[:index] == true ? INDEX_TYPES[:notunique] : INDEX_TYPES[options[:index]]
+        index_type = options[:index] == true ? INDEX_TYPES[:notunique] : type_for(options[:index])
         prop.createIndex index_type
       end
 
@@ -80,6 +64,27 @@ module OrientDB
     alias :to_s :inspect
 
     class << self
+
+      def type_for(value)
+        value = value.orientdb_type if value.respond_to?(:orientdb_type)
+        value = value.oclass if value.respond_to?(:oclass)
+        type = case value
+                 when OrientDB::SchemaType, OrientDB::OClass
+                   value
+                 when String
+                   if schema.exists_class?(value)
+                     schema.get_class(value)
+                   else
+                     FIELD_TYPES[value.to_sym]
+                   end
+                 when Symbol
+                   FIELD_TYPES[value]
+                 else
+                   FIELD_TYPES[value.to_s.to_sym]
+               end
+        raise "Uknown schema type for [#{value}] (#{value.class.name})" unless type
+        type
+      end
 
       def create(db, name, fields = { })
         name        = name.to_s

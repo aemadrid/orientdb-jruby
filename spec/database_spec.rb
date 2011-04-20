@@ -26,13 +26,13 @@ describe "OrientDB" do
     end
 
     it "should create a complex table" do
-      exp_class = "#<OrientDB::OClass:invoice number=INTEGER(idx) customer=LINK sold_on=DATE total=FLOAT lines=LINKLIST>"
+      exp_class = "#<OrientDB::OClass:invoice total=FLOAT sold_on=DATE lines=LINKLIST number=INTEGER(idx) customer=LINK>"
       exp_props = [
-        "#<OrientDB::Propery:number type=int indexed=true mandatory=true not_null=false>",
-        "#<OrientDB::Propery:customer type=link indexed=false mandatory=false not_null=true>",
-        "#<OrientDB::Propery:sold_on type=date indexed=false mandatory=false not_null=false>",
-        "#<OrientDB::Propery:total type=decimal indexed=false mandatory=false not_null=false>",
-        "#<OrientDB::Propery:lines type=link_list indexed=false mandatory=false not_null=false>"
+        "#<OrientDB::Propery:total type=decimal indexed=false mandatory=false not_null=false>", 
+        "#<OrientDB::Propery:sold_on type=date indexed=false mandatory=false not_null=false>", 
+        "#<OrientDB::Propery:lines type=link_list indexed=false mandatory=false not_null=false>", 
+        "#<OrientDB::Propery:number type=int indexed=true mandatory=true not_null=false>", 
+        "#<OrientDB::Propery:customer type=link indexed=false mandatory=false not_null=true>"
       ]
       @invoice_class.to_s.should == exp_class
       @invoice_class.properties.map { |x| x.to_s }.should == exp_props

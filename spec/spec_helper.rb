@@ -21,6 +21,9 @@ unless defined?(SPEC_HELPER_LOADED)
     end
   else
     TEST_DB_PATH = "#{TEMP_DIR}/databases/db_#{rand(999) + 1}"
+    require 'fileutils'
+    FileUtils.remove_dir "#{TEMP_DIR}/databases" rescue nil
+    FileUtils.mkdir_p TEST_DB_PATH
     puts ">> Testing [local] Database :: TEST_DB PATH : #{TEST_DB_PATH}"
     FileUtils.remove_dir "#{TEMP_DIR}/databases/"
     FileUtils.mkdir_p TEST_DB_PATH

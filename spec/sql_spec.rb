@@ -1,4 +1,4 @@
-require File.expand_path("../spec_basic_helper", __FILE__)
+require 'spec_basic_helper'
 
 describe "OrientDB" do
 

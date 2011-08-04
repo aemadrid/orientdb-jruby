@@ -1,6 +1,5 @@
 raise "Rubyhaze only runs on JRuby. Sorry!" unless (RUBY_PLATFORM =~ /java/)
 
-$: << File.dirname(__FILE__)
 $: << File.expand_path('../../jars/', __FILE__)
 
 require 'java'

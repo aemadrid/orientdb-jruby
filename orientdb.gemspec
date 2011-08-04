@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
     ".document",
     ".gitignore",
     ".rvmrc",
+    "GEMFILE",
     "LICENSE",
     "README.rdoc",
     "Rakefile",

@@ -22,9 +22,11 @@ tmtags
 ## PROJECT::GENERAL
 .bundle
 coverage
+Gemfile.lock
 coverage.data
 rdoc
 pkg
+*.gem
 
 ## PROJECT::SPECIFIC
 tmp

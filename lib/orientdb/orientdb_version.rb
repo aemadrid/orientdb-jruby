@@ -1,3 +1,3 @@
 module OrientDB
-  ORIENTDB_VERSION = "0.9.25"
+  ORIENTDB_VERSION = "1.0rc4"
 end

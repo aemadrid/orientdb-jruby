@@ -30,7 +30,7 @@ module OrientDB
     end
 
     def find_by_rid(rid)
-      first "SELECT FROM #{rid}"
+      first "SELECT FROM [#{rid}]"
     end
 
     def find_by_rids(*rids)

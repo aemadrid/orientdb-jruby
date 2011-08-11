@@ -92,7 +92,7 @@ describe "OrientDB" do
 #      @invoice.to_s.should == "#<OrientDB::Document:invoice_line:8:0 product:#<OrientDB::Document:product:7:0 title:Hammer price:5.5 sku:H509> price:5.5 quantity:1>"
       @invoice.customer.should == @customer
       @invoice.total = @total
-      @invoice.lines.should == [@line1, @line2]
+      @invoice.lines.to_a.should == [@line1, @line2]
     end
   end
 

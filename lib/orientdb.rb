@@ -1,10 +1,10 @@
-raise "Rubyhaze only runs on JRuby. Sorry!" unless (RUBY_PLATFORM =~ /java/)
+raise "OrieentDB-client only runs on JRuby. Sorry!" unless (RUBY_PLATFORM =~ /java/)
 
 $: << File.dirname(__FILE__)
 $: << File.expand_path('../../jars/', __FILE__)
 
 require 'java'
-require "orientdb-client-0.9.25"
+require "orientdb-client-1.0rc7"
 
 module OrientDB
 

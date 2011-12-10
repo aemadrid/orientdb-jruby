@@ -1,25 +1,19 @@
 raise "OrieentDB-client only runs on JRuby. Sorry!" unless (RUBY_PLATFORM =~ /java/)
 
-$: << File.dirname(__FILE__)
-$: << File.expand_path('../../jars/', __FILE__)
+module OrientDB
+  GEM_PATH = File.dirname File.expand_path(__FILE__) unless const_defined?(:GEM_PATH)
+end
+
+$: << OrientDB::GEM_PATH
+$: << File.join(OrientDB::GEM_PATH, 'jars')
 
 require 'java'
 require "orientdb-client-1.0rc7"
 
-module OrientDB
-
-  def self.const_missing(missing)
-    puts "[#{name}:const_missing] #{missing}"
-    super
-  end
-
-end
-
+require 'orientdb/version'
 require 'orientdb/ext'
 require 'orientdb/rid'
 require 'orientdb/constants'
-require 'orientdb/version'
-require 'orientdb/user'
 require 'orientdb/property'
 require 'orientdb/schema'
 require 'orientdb/storage'

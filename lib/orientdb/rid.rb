@@ -2,13 +2,13 @@ class OrientDB::RID
 
   attr_reader :cluster_id, :document_id
 
-  def initialize(rid_str = '-1:-1')
-    idx = rid_str.index(':')
-    if idx
-      self.cluster_id  = rid_str[0, idx]
-      self.document_id = rid_str[idx+1..-1]
+  def initialize(rid = '#-1:-1')
+    parts = rid.to_s.gsub('#', '').split ":"
+    if parts.size == 2
+      self.cluster_id = parts.first.to_i
+      self.document_id = parts.last.to_i
     else
-      raise "Unknown parameters #{args.inspect}"
+      raise "Unknown rid [#{rid}]"
     end
   end
 
@@ -21,11 +21,13 @@ class OrientDB::RID
   end
 
   def inspect
-    "#{cluster_id}:#{@document_id}"
+    "##{cluster_id}:#{@document_id}"
   end
 
+  alias :to_s :inspect
+
   def unsaved?
-    to_s == '-1:-1'
+    to_s == '#-1:-1'
   end
 
   def saved?
@@ -35,8 +37,6 @@ class OrientDB::RID
   def valid?
     saved? || unsaved?
   end
-
-  alias :to_s :inspect
 end
 
 class String

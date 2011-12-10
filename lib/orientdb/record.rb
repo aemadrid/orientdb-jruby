@@ -8,14 +8,6 @@ module OrientDB
     alias :to_s :inspect
   end
 
-  class RecordMap
-    def inspect
-      "#<OrientDB::RecordMap:#{toString}>"
-    end
-
-    alias :to_s :inspect
-  end
-
   class RecordSet
     def inspect
       "#<OrientDB::RecordSet:#{toString}>"

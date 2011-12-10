@@ -5,26 +5,24 @@ module OrientDB
   DocumentDatabasePool   = com.orientechnologies.orient.core.db.document.ODatabaseDocumentPool
   DocumentDatabasePooled = com.orientechnologies.orient.core.db.document.ODatabaseDocumentTxPooled
   Document               = com.orientechnologies.orient.core.record.impl.ODocument
-  IndexType              = com.orientechnologies.orient.core.metadata.schema.OProperty::INDEX_TYPE
-  OClass                 = com.orientechnologies.orient.core.metadata.schema.OClass
+  OClassImpl             = com.orientechnologies.orient.core.metadata.schema.OClassImpl
   LocalStorage           = com.orientechnologies.orient.core.storage.impl.local.OStorageLocal
   LocalCluster           = com.orientechnologies.orient.core.storage.impl.local.OClusterLocal
   LogicalCluster         = com.orientechnologies.orient.core.storage.impl.local.OClusterLogical
-  Property               = com.orientechnologies.orient.core.metadata.schema.OProperty
+  PropertyImpl           = com.orientechnologies.orient.core.metadata.schema.OPropertyImpl
   RecordList             = com.orientechnologies.orient.core.db.record.ORecordTrackedList
-  RecordMap              = com.orientechnologies.orient.core.db.record.ORecordTrackedMap
   RecordSet              = com.orientechnologies.orient.core.db.record.ORecordTrackedSet
   RemoteStorage          = com.orientechnologies.orient.client.remote.OStorageRemote
   Schema                 = com.orientechnologies.orient.core.metadata.schema.OSchema
+  SchemaProxy            = com.orientechnologies.orient.core.metadata.schema.OSchemaProxy
   SchemaType             = com.orientechnologies.orient.core.metadata.schema.OType
-  SQLSynchQuery          = com.orientechnologies.orient.core.sql.query.OSQLSynchQuery
   SQLCommand             = com.orientechnologies.orient.core.sql.OCommandSQL
+  SQLSynchQuery          = com.orientechnologies.orient.core.sql.query.OSQLSynchQuery
   User                   = com.orientechnologies.orient.core.metadata.security.OUser
 
-  STORAGE_TYPES          = %w{ LOGICAL MEMORY PHYSICAL }.inject({}) { |h, s| h[s.downcase.to_sym] = ClusterType.const_get s; h }
-  INDEX_TYPES            = %w{ FULLTEXT NOTUNIQUE UNIQUE }.inject({}) { |h, s| h[s.downcase.to_sym] = IndexType.const_get s; h }
+  STORAGE_TYPES = %w{ LOGICAL MEMORY PHYSICAL }.inject({ }) { |h, s| h[s.downcase.to_sym] = ClusterType.const_get s; h }
 
-  FIELD_TYPES            = {
+  FIELD_TYPES = {
     :binary        => "BINARY",
     :bool          => "BOOLEAN",
     :boolean       => "BOOLEAN",
@@ -50,7 +48,7 @@ module OrientDB
     :long          => "LONG",
     :short         => "SHORT",
     :string        => "STRING",
-  }.inject({}) do |h, (k, v)|
+  }.inject({ }) do |h, (k, v)|
     h[k] = SchemaType.const_get v
     h
   end

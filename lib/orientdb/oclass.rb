@@ -1,6 +1,6 @@
 module OrientDB
 
-  class OClass
+  class OClassImpl
 
     def type_for(value)
       self.class.type_for value
@@ -19,7 +19,7 @@ module OrientDB
           prop = create_property property_name, type
         when Symbol
           prop = create_property property_name, type_for(type)
-        when OClass
+        when OClassImpl
           prop = create_property property_name, type_for(:link), type
         when Array
           type, sub_type = type_for(type.first), type_for(type.last)
@@ -32,10 +32,10 @@ module OrientDB
       prop.set_max options[:max].to_s unless options[:max].nil?
       prop.set_mandatory !!options[:mandatory] unless options[:mandatory].nil?
       prop.set_not_null options[:not_null] unless options[:not_null].nil?
-      unless options[:index].nil?
-        index_type = options[:index] == true ? INDEX_TYPES[:notunique] : INDEX_TYPES[options[:index]]
-        prop.createIndex index_type
-      end
+      #unless options[:index].nil?
+      #  index_type = options[:index] == true ? INDEX_TYPES[:notunique] : INDEX_TYPES[options[:index]]
+      #  prop.createIndex index_type
+      #end
 
       self
     end
@@ -55,7 +55,7 @@ module OrientDB
 
     def inspect
       props = properties.map { |x| "#{x.name}=#{x.type.name}#{x.is_indexed? ? '(idx)' : ''}" }.join(' ')
-      "#<OrientDB::OClass:" + name +
+      "#<OrientDB::OClassImpl:" + name +
         (getSuperClass ? ' super=' + getSuperClass.name : '') +
         (props.empty? ? '' : ' ' + props) +
         ">"
@@ -68,7 +68,7 @@ module OrientDB
       def type_for(value)
         value = value.oclass if value.respond_to?(:oclass)
         type = case value
-                 when OrientDB::SchemaType, OrientDB::OClass
+                 when OrientDB::SchemaType, OrientDB::OClassImpl
                    value
                  when String
                    if schema.exists_class?(value)
@@ -105,14 +105,14 @@ module OrientDB
         end
 
         super_klass = fields.delete :super
-        super_klass = db.get_class(super_klass.to_s) unless super_klass.is_a?(OrientDB::OClass)
+        super_klass = db.get_class(super_klass.to_s) unless super_klass.is_a?(OrientDB::OClassImpl)
         klass.set_super_class super_klass if super_klass
         db.schema.save
 
         unless fields.empty?
           fields.each do |property_name, type|
             case type
-              when Symbol, Array, OrientDB::OClass
+              when Symbol, Array, OrientDB::OClassImpl
                 klass.add property_name, type
               when Hash
                 options = type.dup

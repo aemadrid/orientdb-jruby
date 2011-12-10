@@ -59,7 +59,7 @@ module OrientDB
     end
 
     def create_class(klass_name, fields = {})
-      OrientDB::OClass.create self, klass_name.to_s, fields
+      OrientDB::OClassImpl.create self, klass_name.to_s, fields
     end
 
     def get_or_create_class(klass_name, fields = {})

@@ -33,34 +33,35 @@ unless defined?(SPEC_HELPER_LOADED)
 
   module Helpers
     def create_classes
-      # People
       @person_class   = DB.recreate_class :person, :name => :string
-      # Customers
       @customer_class = DB.recreate_class :customer,
                                           :super => @person_class,
                                           :tab   => :float
-      # Employees
       @employee_class = DB.recreate_class :employee,
                                           :super  => @person_class,
                                           :age    => :int,
                                           :groups => [:embedded_list, :string]
-      # Products
       @product_class  = DB.recreate_class :product,
                                           :sku   => :string,
                                           :title => :string,
                                           :price => :float
-      # Invoice Lines
       @line_class     = DB.recreate_class :invoice_line,
                                           :product  => @product_class,
                                           :quantity => :int,
                                           :price    => :float
-      # Invoices
       @invoice_class  = DB.recreate_class :invoice,
                                           :number   => {:type => :int, :mandatory => true, :index => true},
                                           :customer => {:type => @customer_class, :not_null => true},
                                           :sold_on  => :date,
                                           :total    => {:type => :float}, # , :min => java.lang.Float.new('0.01'), :max => java.lang.Float.new('1000.0')
                                           :lines    => [:link_list, @line_class]
+
+      #@person_class   = DB.recreate_class :person
+      #@customer_class = DB.recreate_class :customer
+      #@employee_class = DB.recreate_class :employee
+      #@product_class  = DB.recreate_class :product
+      #@line_class     = DB.recreate_class :invoice_line
+      #@invoice_class  = DB.recreate_class :invoice
     end
   end
 

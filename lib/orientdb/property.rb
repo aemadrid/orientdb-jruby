@@ -1,6 +1,5 @@
 module OrientDB
-
-  class Property
+  class PropertyImpl
 
     def type_short
       @type_short ||= OrientDB::FIELD_TYPES.select { |k, v| v.name == getType.name }.first.first
@@ -35,5 +34,4 @@ module OrientDB
     alias :to_s :inspect
 
   end
-
 end

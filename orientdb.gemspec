@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{orientdb}
-  s.version = "0.0.17"
+  s.version = "0.0.19"
   s.platform = %q{jruby}
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.3.6") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Adrian Madrid}]
-  s.date = %q{2011-12-09}
+  s.date = %q{2011-12-10}
   s.description = %q{Simple JRuby wrapper for the OrientDB.}
   s.email = [%q{aemadrid@gmail.com}]
   s.executables = [%q{orientdb_console}]
@@ -27,13 +27,14 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "bin/orientdb_console",
-    "jars/orient-commons-1.0rc7.jar",
-    "jars/orientdb-client-1.0rc7.jar",
-    "jars/orientdb-core-1.0rc7.jar",
-    "jars/orientdb-enterprise-1.0rc7.jar",
-    "jars/orientdb-server-1.0rc7.jar",
-    "jars/orientdb-tools-1.0rc7.jar",
-    "jars/persistence-api-1.0.jar",
+    "lib/jars/orient-commons-1.0rc7.jar",
+    "lib/jars/orientdb-client-1.0rc7.jar",
+    "lib/jars/orientdb-core-1.0rc7.jar",
+    "lib/jars/orientdb-enterprise-1.0rc7.jar",
+    "lib/jars/orientdb-server-1.0rc7.jar",
+    "lib/jars/orientdb-tools-1.0rc7.jar",
+    "lib/jars/persistence-api-1.0.jar",
+    "lib/old/constants.rb",
     "lib/orientdb.rb",
     "lib/orientdb/constants.rb",
     "lib/orientdb/database.rb",
@@ -52,7 +53,6 @@ Gem::Specification.new do |s|
     "lib/orientdb/sql/query.rb",
     "lib/orientdb/sql/update.rb",
     "lib/orientdb/storage.rb",
-    "lib/orientdb/user.rb",
     "lib/orientdb/version.rb",
     "orientdb.gemspec",
     "spec/database_spec.rb",

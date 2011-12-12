@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{orientdb}
-  s.version = "0.0.19"
+  s.version = "0.0.20"
   s.platform = %q{jruby}
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.3.6") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Adrian Madrid}]
-  s.date = %q{2011-12-10}
+  s.date = %q{2011-12-12}
   s.description = %q{Simple JRuby wrapper for the OrientDB.}
   s.email = [%q{aemadrid@gmail.com}]
   s.executables = [%q{orientdb_console}]
@@ -34,7 +34,6 @@ Gem::Specification.new do |s|
     "lib/jars/orientdb-server-1.0rc7.jar",
     "lib/jars/orientdb-tools-1.0rc7.jar",
     "lib/jars/persistence-api-1.0.jar",
-    "lib/old/constants.rb",
     "lib/orientdb.rb",
     "lib/orientdb/constants.rb",
     "lib/orientdb/database.rb",

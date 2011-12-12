@@ -18,7 +18,7 @@ describe "OrientDB" do
     it "should create a valid simple descendant table" do
       exp_class = "#<OrientDB::OClassImpl:customer super=person tab=FLOAT name=STRING>"
       exp_props = [
-        "#<OrientDB::Propery:tab type=decimal indexed=false mandatory=false not_null=false>",
+        "#<OrientDB::Propery:tab type=float indexed=false mandatory=false not_null=false>",
         "#<OrientDB::Propery:name type=string indexed=false mandatory=false not_null=false>"
       ]
       @customer_class.to_s.should == exp_class
@@ -26,12 +26,12 @@ describe "OrientDB" do
     end
 
     it "should create a complex table" do
-      exp_class = "#<OrientDB::OClassImpl:invoice total=FLOAT sold_on=DATE lines=LINKLIST number=INTEGER customer=LINK>"
+      exp_class = "#<OrientDB::OClassImpl:invoice total=FLOAT sold_on=DATE lines=LINKLIST number=INTEGER(idx) customer=LINK>"
       exp_props = [
-        "#<OrientDB::Propery:total type=decimal indexed=false mandatory=false not_null=false>", 
-        "#<OrientDB::Propery:sold_on type=date indexed=false mandatory=false not_null=false>", 
-        "#<OrientDB::Propery:lines type=link_list indexed=false mandatory=false not_null=false>", 
-        "#<OrientDB::Propery:number type=int indexed=false mandatory=true not_null=false>",
+        "#<OrientDB::Propery:total type=float indexed=false mandatory=false not_null=false>",
+        "#<OrientDB::Propery:sold_on type=date indexed=false mandatory=false not_null=false>",
+        "#<OrientDB::Propery:lines type=linklist indexed=false mandatory=false not_null=false>",
+        "#<OrientDB::Propery:number type=integer indexed=true mandatory=true not_null=false>",
         "#<OrientDB::Propery:customer type=link indexed=false mandatory=false not_null=true>"
       ]
       @invoice_class.to_s.should == exp_class

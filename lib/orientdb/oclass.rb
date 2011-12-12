@@ -32,10 +32,10 @@ module OrientDB
       prop.set_max options[:max].to_s unless options[:max].nil?
       prop.set_mandatory !!options[:mandatory] unless options[:mandatory].nil?
       prop.set_not_null options[:not_null] unless options[:not_null].nil?
-      #unless options[:index].nil?
-      #  index_type = options[:index] == true ? INDEX_TYPES[:notunique] : INDEX_TYPES[options[:index]]
-      #  prop.createIndex index_type
-      #end
+      unless options[:index].nil?
+        index_type = options[:index] == true ? INDEX_TYPES[:notunique] : INDEX_TYPES[options[:index]]
+        prop.createIndex index_type
+      end
 
       self
     end

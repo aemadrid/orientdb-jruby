@@ -53,15 +53,8 @@ unless defined?(SPEC_HELPER_LOADED)
                                           :number   => {:type => :int, :mandatory => true, :index => true},
                                           :customer => {:type => @customer_class, :not_null => true},
                                           :sold_on  => :date,
-                                          :total    => {:type => :float}, # , :min => java.lang.Float.new('0.01'), :max => java.lang.Float.new('1000.0')
+                                          :total    => {:type => :float},
                                           :lines    => [:link_list, @line_class]
-
-      #@person_class   = DB.recreate_class :person
-      #@customer_class = DB.recreate_class :customer
-      #@employee_class = DB.recreate_class :employee
-      #@product_class  = DB.recreate_class :product
-      #@line_class     = DB.recreate_class :invoice_line
-      #@invoice_class  = DB.recreate_class :invoice
     end
   end
 

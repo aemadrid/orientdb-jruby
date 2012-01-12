@@ -68,6 +68,13 @@ module OrientDB
       get_class(klass_name) || create_class(klass_name, fields)
     end
 
+    def migrate_class(klass_name, fields = {})
+      klass = get_or_create_class klass_name
+      field.each do |name, options|
+        klass.add name, options
+      end
+    end
+
     def drop_class(klass_name)
       schema.remove_class(klass_name) if schema.exists_class(klass_name)
     end

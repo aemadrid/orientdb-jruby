@@ -3,7 +3,7 @@ module OrientDB
   class OClassImpl
 
     def type_for(value)
-      self.class.type_for value
+      self.class.type_for value, schema
     end
 
     def add(property_name, type, options = { })
@@ -40,6 +40,10 @@ module OrientDB
       self
     end
 
+    def add_index
+
+    end
+
     def [](property_name)
       property_name = property_name.to_s
       exists_property(property_name) ? get_property(property_name) : nil
@@ -65,7 +69,7 @@ module OrientDB
 
     class << self
 
-      def type_for(value)
+      def type_for(value, schema)
         value = value.oclass if value.respond_to?(:oclass)
         type = case value
                  when OrientDB::SchemaType, OrientDB::OClassImpl

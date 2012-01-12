@@ -1,1 +1,1 @@
-rvm use jruby-1.6.5@odb_client
+rvm use jruby-1.6.5@odb

@@ -6,6 +6,8 @@ module OrientDB
       command(sql_command).execute(true)
     end
 
+    alias :cmd :run_command
+
     def prepare_sql_command(command)
       return if command.nil?
       return command.to_sql_command if command.respond_to?(:to_sql_command)
@@ -82,6 +84,10 @@ module OrientDB
 
     def all_in_cluster(cluster_name)
       browse_cluster(cluster_name.to_s).map
+    end
+
+    def quote(value)
+      SQL::Query.quote value
     end
 
   end

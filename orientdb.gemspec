@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{orientdb}
-  s.version = "0.0.21"
+  s.version = "0.0.22"
   s.platform = %q{jruby}
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.3.6") if s.respond_to? :required_rubygems_version=

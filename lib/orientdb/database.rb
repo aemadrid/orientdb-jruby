@@ -71,7 +71,8 @@ module OrientDB
     def migrate_class(klass_name, fields = {})
       klass = get_or_create_class klass_name
       fields.each do |name, options|
-        klass.add name, options
+        type = options.delete :type
+        klass.add name, type, options
       end
     end
 

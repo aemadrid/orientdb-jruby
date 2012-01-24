@@ -112,6 +112,18 @@ module OrientDB
       new(database_url).open(username, password)
     end
 
+    def self.current_thread_connection
+      Thread.current[:orientdb_connection]
+    end
+
+    def self.connect_current_thread(database_url, username, password)
+      Thread.current[:orientdb_connection] = connect database_url, username, password
+    end
+
+    def self.close_current_thread
+      Thread.current[:orientdb_connection] && Thread.current[:orientdb_connection].close
+    end
+
     alias :each_in_class :browseClass
     alias :each_in_cluster :browseCluster
 
@@ -121,6 +133,18 @@ module OrientDB
 
     def self.connect(url, username, password)
       global.acquire(url, username, password)
+    end
+
+    def self.current_thread_connection
+      Thread.current[:orientdb_connection]
+    end
+
+    def self.connect_current_thread(database_url, username, password)
+      Thread.current[:orientdb_connection] = connect database_url, username, password
+    end
+
+    def self.close_current_thread
+      Thread.current[:orientdb_connection] && Thread.current[:orientdb_connection].close
     end
 
   end

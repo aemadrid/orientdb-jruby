@@ -9,7 +9,6 @@ module OrientDB
   OClassImpl             = com.orientechnologies.orient.core.metadata.schema.OClassImpl
   LocalStorage           = com.orientechnologies.orient.core.storage.impl.local.OStorageLocal
   LocalCluster           = com.orientechnologies.orient.core.storage.impl.local.OClusterLocal
-  LogicalCluster         = com.orientechnologies.orient.core.storage.impl.local.OClusterLogical
   PropertyImpl           = com.orientechnologies.orient.core.metadata.schema.OPropertyImpl
   RecordList             = com.orientechnologies.orient.core.db.record.ORecordTrackedList
   RecordSet              = com.orientechnologies.orient.core.db.record.ORecordTrackedSet

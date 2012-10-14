@@ -1,1 +1,1 @@
-rvm use jruby-1.6.5@odb
+rvm --create jruby-1.7.0.RC2@odb

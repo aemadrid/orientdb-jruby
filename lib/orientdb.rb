@@ -8,7 +8,7 @@ $: << OrientDB::GEM_PATH
 $: << File.join(OrientDB::GEM_PATH, 'jars')
 
 require 'java'
-require "orientdb-client-1.0rc7"
+require "orientdb-client-1.2.0"
 
 require 'orientdb/version'
 require 'orientdb/ext'

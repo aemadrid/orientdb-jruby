@@ -1,6 +1,3 @@
-require 'rubygems'
-require 'ruby-debug'
-
 module OrientDB
 
   class OClassImpl

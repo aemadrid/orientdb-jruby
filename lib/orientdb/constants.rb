@@ -28,7 +28,7 @@ module OrientDB
   BLUEPRINTS = com.tinkerpop.blueprints
 
   OrientGraph = BLUEPRINTS.impls.orient.OrientGraph
-  Conclusion = com.tinkerpop.blueprints.TransactionalGraph.Conclusion
+  Conclusion = com.tinkerpop.blueprints.TransactionalGraph::Conclusion
 
 
   INDEX_TYPES   = IndexType.constants.inject({ }) { |h, s| h[s.downcase.to_sym] = IndexType.const_get s; h }

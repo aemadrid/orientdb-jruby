@@ -48,14 +48,4 @@ module OrientDB
 
   end
 
-  class LogicalCluster
-
-    def inspect
-      "#<OrientDB::LogicalCluster:#{getId} name=#{getName.inspect}>"
-    end
-
-    alias :to_s :inspect
-
-  end
-
 end

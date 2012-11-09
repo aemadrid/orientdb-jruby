@@ -101,7 +101,8 @@ module OrientDB
           if use_cluster
             klass = db.schema.create_class name, use_cluster
           elsif add_cluster && !db.storage.cluster_names.include?(name.downcase)
-            cluster = db.storage.add_cluster name.downcase, STORAGE_TYPES[:physical]
+            #debugger
+            cluster = db.storage.add_cluster STORAGE_TYPES[:physical], name.downcase, "/tmp/database", 'default', {}
             klass   = db.schema.create_class name, cluster
           else
             klass = db.schema.create_class name

@@ -10,7 +10,7 @@ describe "OrientDB" do
 
     it "should create a valid simple table" do
       exp_class = "#<OrientDB::OClassImpl:person name=STRING>"
-      exp_props = ["#<OrientDB::Propery:name type=string indexed=false mandatory=false not_null=false>"]
+      exp_props = ["#<OrientDB::Property:name type=string indexed=false mandatory=false not_null=false>"]
       @person_class.to_s.should == exp_class
       @person_class.properties.map { |x| x.to_s }.should == exp_props
     end
@@ -18,8 +18,8 @@ describe "OrientDB" do
     it "should create a valid simple descendant table" do
       exp_class = "#<OrientDB::OClassImpl:customer super=person tab=FLOAT name=STRING>"
       exp_props = [
-        "#<OrientDB::Propery:tab type=float indexed=false mandatory=false not_null=false>",
-        "#<OrientDB::Propery:name type=string indexed=false mandatory=false not_null=false>"
+        "#<OrientDB::Property:tab type=float indexed=false mandatory=false not_null=false>",
+        "#<OrientDB::Property:name type=string indexed=false mandatory=false not_null=false>"
       ]
       @customer_class.to_s.should == exp_class
       @customer_class.properties.map { |x| x.to_s }.should == exp_props
@@ -28,15 +28,20 @@ describe "OrientDB" do
     it "should create a complex table" do
       #exp_class = "#<OrientDB::OClassImpl:invoice total=FLOAT sold_on=DATE lines=LINKLIST number=INTEGER(idx) customer=LINK>"
       exp_props = [
-        "#<OrientDB::Propery:total type=float indexed=false mandatory=false not_null=false>",
-        "#<OrientDB::Propery:sold_on type=date indexed=false mandatory=false not_null=false>",
-        "#<OrientDB::Propery:lines type=linklist indexed=false mandatory=false not_null=false>",
-        "#<OrientDB::Propery:number type=integer indexed=true mandatory=true not_null=false>",
-        "#<OrientDB::Propery:customer type=link indexed=false mandatory=false not_null=true>"
+        "#<OrientDB::Property:total type=float indexed=false mandatory=false not_null=false>",
+        "#<OrientDB::Property:sold_on type=date indexed=false mandatory=false not_null=false>",
+        "#<OrientDB::Property:lines type=linklist indexed=false mandatory=false not_null=false>",
+        "#<OrientDB::Property:number type=integer indexed=true mandatory=true not_null=false>",
+        "#<OrientDB::Property:customer type=link indexed=false mandatory=false not_null=true>"
       ]
       #@invoice_class.to_s.should == exp_class
       #@invoice_class.properties.map { |x| x.to_s }.should == exp_props
+
       #TODO: test all those things above
+      %w(total sold_on lines number customer).each do |property|
+        @invoice_class.get_property(property).class.to_s.should == "Java::ComOrientechnologiesOrientCoreMetadataSchema::OPropertyImpl"
+      end
+
       number_prop = @invoice_class.get_property("number")
       number_prop.type.to_s.should == "INTEGER"
       number_prop.indexed.should be_true

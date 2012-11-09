@@ -24,6 +24,12 @@ module OrientDB
   User                   = CORE.metadata.security.OUser
   RemoteStorage          = CLIENT.remote.OStorageRemote
 
+  #Blueprints
+  BLUEPRINTS = com.tinkerpop.blueprints
+
+  OrientGraph = BLUEPRINTS.impls.orient.OrientGraph
+  Conclusion = com.tinkerpop.blueprints.TransactionalGraph.Conclusion
+
 
   INDEX_TYPES   = IndexType.constants.inject({ }) { |h, s| h[s.downcase.to_sym] = IndexType.const_get s; h }
   STORAGE_TYPES = ClusterType.constants.inject({ }) { |h, s| h[s.downcase.to_sym] = ClusterType.const_get(s).to_s; h }

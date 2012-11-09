@@ -1,24 +1,29 @@
 module OrientDB
+  CORE = com.orientechnologies.orient.core
+  CLIENT = com.orientechnologies.orient.client
 
-  ClusterType            = com.orientechnologies.orient.core.storage.OStorage::CLUSTER_TYPE
-  DocumentDatabase       = com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx
-  DocumentDatabasePool   = com.orientechnologies.orient.core.db.document.ODatabaseDocumentPool
-  DocumentDatabasePooled = com.orientechnologies.orient.core.db.document.ODatabaseDocumentTxPooled
-  Document               = com.orientechnologies.orient.core.record.impl.ODocument
-  IndexType              = com.orientechnologies.orient.core.metadata.schema.OClass::INDEX_TYPE
-  OClassImpl             = com.orientechnologies.orient.core.metadata.schema.OClassImpl
-  LocalStorage           = com.orientechnologies.orient.core.storage.impl.local.OStorageLocal
-  LocalCluster           = com.orientechnologies.orient.core.storage.impl.local.OClusterLocal
-  PropertyImpl           = com.orientechnologies.orient.core.metadata.schema.OPropertyImpl
-  RecordList             = com.orientechnologies.orient.core.db.record.ORecordTrackedList
-  RecordSet              = com.orientechnologies.orient.core.db.record.ORecordTrackedSet
-  RemoteStorage          = com.orientechnologies.orient.client.remote.OStorageRemote
-  Schema                 = com.orientechnologies.orient.core.metadata.schema.OSchema
-  SchemaProxy            = com.orientechnologies.orient.core.metadata.schema.OSchemaProxy
-  SchemaType             = com.orientechnologies.orient.core.metadata.schema.OType
-  SQLCommand             = com.orientechnologies.orient.core.sql.OCommandSQL
-  SQLSynchQuery          = com.orientechnologies.orient.core.sql.query.OSQLSynchQuery
-  User                   = com.orientechnologies.orient.core.metadata.security.OUser
+  ClusterType            = CORE.storage.OStorage::CLUSTER_TYPE
+  DocumentDatabase       = CORE.db.document.ODatabaseDocumentTx
+  DocumentDatabasePool   = CORE.db.document.ODatabaseDocumentPool
+  DocumentDatabasePooled = CORE.db.document.ODatabaseDocumentTxPooled
+  GraphDatabase          = CORE.db.graph.OGraphDatabase
+  OTraverse              = CORE.command.traverse.OTraverse
+  Document               = CORE.record.impl.ODocument
+  IndexType              = CORE.metadata.schema.OClass::INDEX_TYPE
+  OClassImpl             = CORE.metadata.schema.OClassImpl
+  LocalStorage           = CORE.storage.impl.local.OStorageLocal
+  LocalCluster           = CORE.storage.impl.local.OClusterLocal
+  PropertyImpl           = CORE.metadata.schema.OPropertyImpl
+  RecordList             = CORE.db.record.ORecordTrackedList
+  RecordSet              = CORE.db.record.ORecordTrackedSet
+  Schema                 = CORE.metadata.schema.OSchema
+  SchemaProxy            = CORE.metadata.schema.OSchemaProxy
+  SchemaType             = CORE.metadata.schema.OType
+  SQLCommand             = CORE.sql.OCommandSQL
+  SQLSynchQuery          = CORE.sql.query.OSQLSynchQuery
+  User                   = CORE.metadata.security.OUser
+  RemoteStorage          = CLIENT.remote.OStorageRemote
+
 
   INDEX_TYPES   = IndexType.constants.inject({ }) { |h, s| h[s.downcase.to_sym] = IndexType.const_get s; h }
   STORAGE_TYPES = ClusterType.constants.inject({ }) { |h, s| h[s.downcase.to_sym] = ClusterType.const_get(s).to_s; h }

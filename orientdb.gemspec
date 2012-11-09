@@ -67,12 +67,13 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.8.9}
   s.summary = %q{JRuby wrapper for OrientDB}
 
-  if s.respond_to? :specification_version then
+  if s.respond_to? :specification_version
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0')
       s.add_development_dependency(%q<awesome_print>, [">= 0"])
       s.add_development_dependency(%q<rspec>, [">= 2.4"])
+      s.add_development_dependency("ruby-debug")
     else
       s.add_dependency(%q<awesome_print>, [">= 0"])
       s.add_dependency(%q<rspec>, [">= 2.4"])

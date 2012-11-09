@@ -21,7 +21,7 @@ module OrientDB
   User                   = com.orientechnologies.orient.core.metadata.security.OUser
 
   INDEX_TYPES   = IndexType.constants.inject({ }) { |h, s| h[s.downcase.to_sym] = IndexType.const_get s; h }
-  STORAGE_TYPES = ClusterType.constants.inject({ }) { |h, s| h[s.downcase.to_sym] = ClusterType.const_get s; h }
+  STORAGE_TYPES = ClusterType.constants.inject({ }) { |h, s| h[s.downcase.to_sym] = ClusterType.const_get(s).to_s; h }
   FIELD_TYPES   = SchemaType.constants.inject({ }) { |h, s| h[s.downcase.to_sym] = SchemaType.const_get s; h }
   {
     :bool          => "BOOLEAN",

@@ -1,1 +1,1 @@
-rvm --create jruby-1.7.0.RC2@odb
+rvm --create jruby-1.7.0@odb

@@ -69,6 +69,9 @@ Let's get the gem installed and test out the interactive console.
   >> i2 = is.last
   => #<OrientDB::Document:Invoice total:350.75 id:1 data:61246887673000 customer:#<OrientDB::Document:Customer name:Leonardo>>
 
+== Contributors
+
+* Topper Bowers @tobowers - Updated jars to 1.20 and added graph capabilities.
 
 == Note on Patches/Pull Requests
 

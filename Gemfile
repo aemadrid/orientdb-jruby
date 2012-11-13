@@ -1,3 +1,8 @@
-source(ENV['GEM_SOURCE'] || "http://rubygems.org")
+source "http://rubygems.org"
 
-gemspec
+group :development do
+  gem "rspec", ">= 2.4"
+  gem "awesome_print", ">= 0"
+  gem "bundler", ">= 1.0.0"
+  gem "jeweler", ">= 1.8.3"
+end

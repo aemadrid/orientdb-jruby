@@ -16,8 +16,9 @@ tmtags
 ## IDEA
 .idea/*
 
-## RVM
+## RVM/RBENV
 .rvmrc
+.rbenv*
 
 ## PROJECT::GENERAL
 .bundle

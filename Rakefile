@@ -27,13 +27,14 @@ require 'orientdb/version'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   gem.name = "orientdb"
-  gem.version       = OrientDB::VERSION
+  gem.version = OrientDB::VERSION
   gem.homepage = "http://github.com/aemadrid/orientdb-jruby"
   gem.summary = %Q{Simple JRuby wrapper for the OrientDB.}
   gem.description = %Q{Simple JRuby wrapper for the OrientDB.}
   gem.email = "aemadrid@gmail.com"
   gem.authors = ["Adrian Madrid"]
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.executables = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.platform = 'java'
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new

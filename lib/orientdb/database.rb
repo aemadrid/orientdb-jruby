@@ -77,11 +77,15 @@ module OrientDB
     end
 
     def drop_class(klass_name)
-      schema.remove_class(klass_name) if schema.exists_class(klass_name)
+      schema.drop_class(klass_name) if schema.exists_class(klass_name)
     end
 
     def recreate_class(klass_name, fields = {})
-      run_command("DELETE FROM #{klass_name}") rescue nil
+      #run_command("DELETE FROM '#{klass_name}'") rescue nil
+      root_class = get_class(klass_name)
+      schema.classes.each do |possible_sub_class|
+        drop_class(possible_sub_class.name) if possible_sub_class.is_sub_class_of(root_class)
+      end
       drop_class(klass_name) rescue nil
       create_class klass_name, fields
     end

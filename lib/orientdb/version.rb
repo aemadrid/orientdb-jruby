@@ -1,3 +1,3 @@
 module OrientDB
-  VERSION = File.read File.expand_path(File.join(OrientDB::GEM_PATH, '..', 'VERSION'))
+  VERSION = '0.1.0'
 end

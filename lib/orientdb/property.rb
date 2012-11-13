@@ -24,7 +24,7 @@ module OrientDB
     end
 
     def inspect
-      "#<OrientDB::Propery:#{name} type=#{type_short} " +
+      "#<OrientDB::Property:#{name} type=#{type_short} " +
         "#{linked_type_short ? "linked_type=#{linked_type_short} linked_class=#{getLinkedClass.name}" : ''}" +
         "indexed=#{is_indexed?} mandatory=#{is_mandatory?} not_null=#{is_not_null}" +
         "#{min ? " min=#{min}" : ''}#{max ? " max=#{max}" : ''}" +

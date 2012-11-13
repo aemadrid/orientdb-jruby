@@ -3,6 +3,11 @@ require 'rake'
 
 require 'rspec/core/rake_task'
 
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'orientdb/version'
+
+
 #
 # Test a local database:
 # rake spec
@@ -26,14 +31,12 @@ task :cleanup_rcov_files do
   rm_rf 'coverage.data'
 end
 
-task :spec => :check_dependencies
-
 task :default => :spec
 
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = "orientdb #{version}"
+  rdoc.title    = "orientdb #{OrientDB::VERSION}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end

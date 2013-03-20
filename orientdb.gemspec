@@ -24,7 +24,7 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency(%q<awesome_print>, [">= 0"])
   gem.add_development_dependency(%q<rspec>, [">= 2.4"])
-  #gem.add_development_dependency("ruby-debug")
+  gem.add_development_dependency("pry")
 
 end
 

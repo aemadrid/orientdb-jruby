@@ -8,9 +8,9 @@ $: << OrientDB::GEM_PATH
 $: << File.join(OrientDB::GEM_PATH, 'jars')
 
 require 'java'
-require "orient-commons-1.2.0"
-require "orientdb-client-1.2.0"
-require "orientdb-enterprise-1.2.0"
+require "orient-commons-1.3.0"
+require "orientdb-client-1.3.0"
+require "orientdb-enterprise-1.3.0"
 require "blueprints-core-2.2.0-SNAPSHOT"
 require "blueprints-orient-graph-2.2.0-SNAPSHOT"
 require "pipes-2.0.0-SNAPSHOT"

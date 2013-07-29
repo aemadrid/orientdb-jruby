@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "orientdb"
-  s.version = "1.3.0"
+  s.version = "1.4.1"
   s.platform = "java"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
@@ -28,15 +28,15 @@ Gem::Specification.new do |s|
     "bin/orientdb_console",
     "lib/jars/blueprints-core-2.2.0-SNAPSHOT.jar",
     "lib/jars/blueprints-orient-graph-2.2.0-SNAPSHOT.jar",
-    "lib/jars/orient-commons-1.3.0.jar",
-    "lib/jars/orientdb-client-1.3.0.jar",
-    "lib/jars/orientdb-core-1.3.0.jar",
-    "lib/jars/orientdb-distributed-1.3.0.jar",
-    "lib/jars/orientdb-enterprise-1.3.0.jar",
-    "lib/jars/orientdb-graphdb-1.3.0.jar",
-    "lib/jars/orientdb-server-1.3.0.jar",
-    "lib/jars/orientdb-tools-1.3.0.jar",
-    "lib/jars/pipes-2.0.0-SNAPSHOT.jar",
+    "lib/jars/orient-commons-1.4.1.jar",
+    "lib/jars/orientdb-client-1.4.1.jar",
+    "lib/jars/orientdb-core-1.4.1.jar",
+    "lib/jars/orientdb-distributed-1.4.1.jar",
+    "lib/jars/orientdb-enterprise-1.4.1.jar",
+    "lib/jars/orientdb-graphdb-1.4.1.jar",
+    "lib/jars/orientdb-server-1.4.1.jar",
+    "lib/jars/orientdb-tools-1.4.1.jar",
+    "lib/jars/pipes-2.4.0-SNAPSHOT.jar",
     "lib/orientdb.rb",
     "lib/orientdb/constants.rb",
     "lib/orientdb/database.rb",

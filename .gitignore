@@ -19,6 +19,8 @@ tmtags
 ## RVM/RBENV
 .rvmrc
 .rbenv*
+.ruby-version
+.ruby-gemset
 
 ## PROJECT::GENERAL
 .bundle

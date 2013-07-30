@@ -11,8 +11,8 @@ require 'java'
 require "orient-commons-1.4.1"
 require "orientdb-client-1.4.1"
 require "orientdb-enterprise-1.4.1"
-require "blueprints-core-2.2.0-SNAPSHOT"
-require "blueprints-orient-graph-2.2.0-SNAPSHOT"
+require "blueprints-core-2.4.0-SNAPSHOT"
+require "blueprints-orient-graph-2.4.0-SNAPSHOT"
 require "pipes-2.4.0-SNAPSHOT"
 
 require 'orientdb/version'

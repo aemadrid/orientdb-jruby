@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = "orientdb"
-  s.version = "1.5.0"
+  s.version = "1.3.0"
   s.platform = "java"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Adrian Madrid"]
-  s.date = "2013-03-20"
+  s.date = "2013-08-02"
   s.description = "Simple JRuby wrapper for the OrientDB."
   s.email = "aemadrid@gmail.com"
   s.executables = ["orientdb_console"]
@@ -34,6 +34,8 @@ Gem::Specification.new do |s|
     "lib/jars/orientdb-distributed-1.5.0.jar",
     "lib/jars/orientdb-enterprise-1.5.0.jar",
     "lib/jars/orientdb-graphdb-1.5.0.jar",
+    "lib/jars/orientdb-nativeos-1.5.0.jar",
+    "lib/jars/orientdb-object-1.5.0.jar",
     "lib/jars/orientdb-server-1.5.0.jar",
     "lib/jars/orientdb-tools-1.5.0.jar",
     "lib/jars/pipes-2.4.0-SNAPSHOT.jar",

@@ -37,6 +37,7 @@ Gem::Specification.new do |s|
     "lib/jars/orientdb-server-1.5.0.jar",
     "lib/jars/orientdb-tools-1.5.0.jar",
     "lib/jars/pipes-2.4.0-SNAPSHOT.jar",
+    "lib/jars/gremlin-2.5.0-SNAPSHOT.jar",
     "lib/orientdb.rb",
     "lib/orientdb/constants.rb",
     "lib/orientdb/database.rb",

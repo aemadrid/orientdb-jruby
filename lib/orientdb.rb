@@ -14,6 +14,7 @@ require "orientdb-enterprise-1.5.0"
 require "blueprints-core-2.4.0-SNAPSHOT"
 require "blueprints-orient-graph-2.4.0-SNAPSHOT"
 require "pipes-2.4.0-SNAPSHOT"
+require "gremlin-java-2.5.0-SNAPSHOT"
 
 require 'orientdb/version'
 require 'orientdb/ext'

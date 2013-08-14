@@ -27,6 +27,9 @@ module OrientDB
   #Blueprints
   BLUEPRINTS = com.tinkerpop.blueprints
 
+  #Gremlin
+  Gremlin = com.tinkerpop.gremlin.java
+
   OrientGraph = BLUEPRINTS.impls.orient.OrientGraph
   Conclusion = com.tinkerpop.blueprints.TransactionalGraph::Conclusion
 

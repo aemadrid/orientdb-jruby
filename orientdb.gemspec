@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "orientdb"
-  s.version = "1.5.0"
+  s.version = "1.5.1"
   s.platform = "java"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
@@ -27,20 +27,20 @@ Gem::Specification.new do |s|
     "Rakefile",
     "bin/orientdb_console",
     "lib/jars/commons-configuration-1.9.jar",
-    "lib/jars/blueprints-core-2.4.0.jar",
+    "lib/jars/blueprints-core-2.5.0-SNAPSHOT.jar",
     "lib/jars/blueprints-orient-graph-2.5.0.jar",
-    "lib/jars/orient-commons-1.5.0.jar",
-    "lib/jars/orientdb-client-1.5.0.jar",
-    "lib/jars/orientdb-core-1.5.0.jar",
-    "lib/jars/orientdb-distributed-1.5.0.jar",
-    "lib/jars/orientdb-enterprise-1.5.0.jar",
-    "lib/jars/orientdb-graphdb-1.5.0.jar",
-    "lib/jars/orientdb-nativeos-1.5.0.jar",
-    "lib/jars/orientdb-object-1.5.0.jar",
-    "lib/jars/orientdb-server-1.5.0.jar",
-    "lib/jars/orientdb-tools-1.5.0.jar",
-    "lib/jars/pipes-2.4.0.jar",
-    "lib/jars/gremlin-java-2.4.0.jar",
+    "lib/jars/orient-commons-1.5.1.jar",
+    "lib/jars/orientdb-client-1.5.1.jar",
+    "lib/jars/orientdb-core-1.5.1.jar",
+    "lib/jars/orientdb-distributed-1.5.1.jar",
+    "lib/jars/orientdb-enterprise-1.5.1.jar",
+    "lib/jars/orientdb-graphdb-1.5.1.jar",
+    "lib/jars/orientdb-nativeos-1.5.1.jar",
+    "lib/jars/orientdb-object-1.5.1.jar",
+    "lib/jars/orientdb-server-1.5.1.jar",
+    "lib/jars/orientdb-tools-1.5.1.jar",
+    "lib/jars/pipes-2.5.0-SNAPSHOT.jar",
+    "lib/jars/gremlin-java-2.5.0-SNAPSHOT.jar",
     "lib/orientdb.rb",
     "lib/orientdb/constants.rb",
     "lib/orientdb/database.rb",

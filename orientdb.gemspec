@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
     "bin/orientdb_console",
     "lib/jars/commons-configuration-1.9.jar",
     "lib/jars/blueprints-core-2.5.0-SNAPSHOT.jar",
-    "lib/jars/blueprints-orient-graph-2.5.0.jar",
+    "lib/jars/blueprints-orient-graph-2.5.0-SNAPSHOT.jar",
     "lib/jars/orient-commons-1.5.1.jar",
     "lib/jars/orientdb-client-1.5.1.jar",
     "lib/jars/orientdb-core-1.5.1.jar",

@@ -9,6 +9,7 @@ $: << File.join(OrientDB::GEM_PATH, 'jars')
 
 require 'java'
 require "commons-configuration-1.9"
+
 require "orient-commons-1.5.1"
 require "orientdb-client-1.5.1"
 require "orientdb-enterprise-1.5.1"

@@ -1,6 +1,7 @@
 module OrientDB
   CORE = com.orientechnologies.orient.core
   CLIENT = com.orientechnologies.orient.client
+  SERVER = com.orientechnologies.orient.server
 
   ClusterType            = CORE.storage.OStorage::CLUSTER_TYPE
   DocumentDatabase       = CORE.db.document.ODatabaseDocumentTx

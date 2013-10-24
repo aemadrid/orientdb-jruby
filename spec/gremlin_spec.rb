@@ -6,7 +6,9 @@ describe OrientDB do
       puts "DB = "
       puts DB
       puts DB.inspect
-      puts OrientDB::OrientGraph.instance_methods
+      puts "and orientgraph = "
+      puts OrientDB::OrientGraph.new(DB)
+      puts "end orient graph"
       begin
         @database = OrientDB::OrientGraph.new(DB)
         puts @database.inspect

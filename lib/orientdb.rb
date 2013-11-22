@@ -11,7 +11,7 @@ require 'java'
 require "commons-configuration-1.9"
 
 require "blueprints-core-2.5.0-SNAPSHOT"
-require "blueprints-orient-graph-2.5.0-SNAPSHOT"
+require "blueprints-orient-graph-2.5.0-SNAPSHOT_ME"
 
 require "orient-commons-1.6.0"
 require "orientdb-core-1.6.0"

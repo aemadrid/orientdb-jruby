@@ -26,13 +26,13 @@ require 'orientdb/version'
 
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
-  gem.name = "orientdb"
+  gem.name = 'orientdb'
   gem.version = OrientDB::VERSION
-  gem.homepage = "http://github.com/aemadrid/orientdb-jruby"
-  gem.summary = %Q{Simple JRuby wrapper for the OrientDB.}
-  gem.description = %Q{Simple JRuby wrapper for the OrientDB.}
-  gem.email = "aemadrid@gmail.com"
-  gem.authors = ["Adrian Madrid"]
+  gem.homepage = 'http://github.com/aemadrid/orientdb-jruby'
+  gem.summary = 'Simple JRuby wrapper for the OrientDB.'
+  gem.description = 'Simple JRuby wrapper for the OrientDB.'
+  gem.email = 'aemadrid@gmail.com'
+  gem.authors = ['Adrian Madrid']
   gem.executables = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.platform = 'java'
   # dependencies defined in Gemfile
@@ -49,10 +49,10 @@ task :default => :spec
 
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
+  version = File.exist?('VERSION') ? File.read('VERSION') : ''
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "bd_money #{version}"
+  rdoc.title = "orientdb-jruby #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end

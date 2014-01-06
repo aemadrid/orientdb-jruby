@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Adrian Madrid"]
-  s.date = "2014-01-03"
+  s.date = "2014-01-06"
   s.description = "Simple JRuby wrapper for the OrientDB."
   s.email = "aemadrid@gmail.com"
   s.executables = ["orientdb_console"]
@@ -28,12 +28,9 @@ Gem::Specification.new do |s|
     "Rakefile",
     "bin/orientdb_console",
     "lib/jars/blueprints-core-2.5.0-SNAPSHOT.jar",
-    "lib/jars/blueprints-core-2.5.0.jar",
     "lib/jars/blueprints-orient-graph-2.5.0-SNAPSHOT.jar",
-    "lib/jars/blueprints-orient-graph-2.5.0.jar",
     "lib/jars/commons-configuration-1.9.jar",
     "lib/jars/gremlin-java-2.5.0-SNAPSHOT.jar",
-    "lib/jars/gremlin-java-2.5.0.jar",
     "lib/jars/jna-4.0.0.jar",
     "lib/jars/orient-commons-1.6.3.jar",
     "lib/jars/orientdb-client-1.6.3.jar",

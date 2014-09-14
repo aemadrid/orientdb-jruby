@@ -33,4 +33,4 @@ pkg
 tmp
 
 ## IDEA
-orientdb-jruby.iml
+*.iml

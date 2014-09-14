@@ -7,7 +7,6 @@ module OrientDB
   DocumentDatabase       = CORE.db.document.ODatabaseDocumentTx
   DocumentDatabasePool   = CORE.db.document.ODatabaseDocumentPool
   DocumentDatabasePooled = CORE.db.document.ODatabaseDocumentTxPooled
-  GraphDatabase          = CORE.db.graph.OGraphDatabase
   OTraverse              = CORE.command.traverse.OTraverse
   Document               = CORE.record.impl.ODocument
   IndexType              = CORE.metadata.schema.OClass::INDEX_TYPE

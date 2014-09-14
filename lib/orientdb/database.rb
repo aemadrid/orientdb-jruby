@@ -84,7 +84,9 @@ module OrientDB
       #run_command("DELETE FROM '#{klass_name}'") rescue nil
       root_class = get_class(klass_name)
       schema.classes.each do |possible_sub_class|
-        drop_class(possible_sub_class.name) if possible_sub_class.is_sub_class_of(root_class)
+        if possible_sub_class.is_sub_class_of(root_class) && root_class.name != possible_sub_class.name
+          drop_class(possible_sub_class.name)
+        end
       end
       drop_class(klass_name) rescue nil
       create_class klass_name, fields

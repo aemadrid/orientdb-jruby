@@ -31,3 +31,6 @@ pkg
 
 ## PROJECT::SPECIFIC
 tmp
+
+## IDEA
+orientdb-jruby.iml

@@ -28,7 +28,7 @@ unless defined?(SPEC_HELPER_LOADED)
     FileUtils.remove_dir "#{TEMP_DIR}/databases/"
     FileUtils.mkdir_p TEST_DB_PATH
     puts ">> TEST_DB PATH : #{TEST_DB_PATH}"
-    DB = OrientDB::DocumentDatabase.new("local:#{TEST_DB_PATH}/test").create
+    DB = OrientDB::DocumentDatabase.new("plocal:#{TEST_DB_PATH}/test").create
   end
 
   module Helpers

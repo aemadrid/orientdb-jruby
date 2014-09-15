@@ -5,7 +5,7 @@ describe "OrientDB" do
   describe "Graph Database" do
 
     before do
-      @database = OrientDB::OrientGraph.new("local:#{TEST_DB_PATH}/graph").create
+      @database = OrientDB::OrientGraph.new("plocal:#{TEST_DB_PATH}/graph").create
       begin
         @topper = @database.add_vertex(nil)
         @topper.set_property("name", "Topper")
